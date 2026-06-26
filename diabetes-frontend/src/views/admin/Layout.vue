@@ -29,7 +29,7 @@
     <!-- 抽屉菜单 -->
     <el-drawer v-model="drawerVisible" title="导航菜单" direction="ltr" size="260px" :with-header="false" class="admin-drawer">
       <div class="drawer-logo">
-        <el-icon :size="24" color="#2b6cb0"><MedicalKit /></el-icon>
+        <el-icon :size="24" color="#22d3ee"><MedicalKit /></el-icon>
         <span>血糖管理助手</span>
       </div>
       <el-menu :default-active="activeMenu" :router="true" @select="drawerVisible = false">
@@ -97,46 +97,58 @@ const handleCommand = async (cmd) => {
 <style scoped>
 .admin-layout {
   min-height: 100vh;
-  background: #f7fafc;
+  background: transparent;
+  position: relative;
+  z-index: 1;
 }
 .admin-header {
-  background: #fff;
+  background: rgba(8, 47, 73, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   height: 56px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 16px;
-  color: #1a202c;
-  border-bottom: 1px solid #edf2f7;
+  color: var(--text-light);
+  border-bottom: 1px solid rgba(34, 211, 238, 0.18);
   position: sticky;
   top: 0;
   z-index: 100;
 }
 .header-left { display: flex; align-items: center; gap: 12px; }
-.menu-btn { color: #4a5568; }
-.header-title { font-size: 17px; font-weight: 700; color: #2b6cb0; }
+.menu-btn { color: var(--text-light); }
+.menu-btn:hover { color: var(--cyan-bright); }
+.header-title { font-size: 17px; font-weight: 700; color: var(--text-bright); font-family: var(--font-display); letter-spacing: 0.06em; text-shadow: 0 0 14px rgba(34, 211, 238, 0.5); }
 .admin-user {
   display: flex;
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  color: #4a5568;
+  color: var(--text-light);
   font-size: 14px;
+  font-weight: 600;
+  padding: 5px 12px 5px 5px;
+  border-radius: 24px;
+  transition: background 0.2s;
 }
+.admin-user:hover { background: rgba(34, 211, 238, 0.14); }
 .user-avatar {
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  background: #ebf4ff;
-  color: #2b6cb0;
+  background: var(--grad-primary);
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: var(--font-display);
+  box-shadow: 0 0 14px rgba(34, 211, 238, 0.55);
 }
-.user-name { font-weight: 500; }
-.admin-content { padding: 16px; max-width: 800px; margin: 0 auto; }
+.user-name { font-weight: 600; }
+.admin-content { padding: 18px 16px 32px; max-width: 800px; margin: 0 auto; }
 
 /* Drawer 样式覆盖 */
 .admin-drawer :deep(.el-drawer__body) { padding: 0; }
@@ -144,11 +156,14 @@ const handleCommand = async (cmd) => {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 20px;
+  padding: 22px 20px;
   font-size: 17px;
   font-weight: 700;
-  color: #2b6cb0;
-  border-bottom: 1px solid #edf2f7;
+  color: var(--text-bright);
+  font-family: var(--font-display);
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid rgba(34, 211, 238, 0.15);
+  background: rgba(6, 36, 61, 0.5);
 }
 .admin-drawer .el-menu { border-right: none; }
 </style>

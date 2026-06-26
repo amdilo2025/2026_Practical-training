@@ -17,7 +17,7 @@
     <div class="chat-messages" ref="msgRef">
       <div v-if="messages.length === 0" class="welcome-area anim-fade-in">
         <div class="welcome-icon">
-          <el-icon :size="48" color="#2563eb"><MagicStick /></el-icon>
+          <el-icon :size="48" color="#0d9488"><MagicStick /></el-icon>
         </div>
         <h4>您好！我是您的健康助手</h4>
         <p class="welcome-desc">关于糖尿病、饮食、运动等问题都可以问我</p>
@@ -135,14 +135,16 @@ const scrollToBottom = async () => {
   height: calc(100vh - 52px - 60px);
   max-width: 480px;
   margin: 0 auto;
-  background: #f8fafc;
+  background: var(--cream);
 }
 
 /* 头部 */
 .chat-header {
-  background: #fff;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   padding: 14px 16px;
-  border-bottom: 1px solid #f3f4f6;
+  border-bottom: 1px solid var(--gray-100);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -150,16 +152,23 @@ const scrollToBottom = async () => {
 }
 .chat-header-left { display: flex; align-items: center; gap: 12px; }
 .chat-ai-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+  background: var(--grad-primary);
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 6px 14px rgba(13, 148, 136, 0.26);
 }
-.chat-title { font-size: 16px; font-weight: 700; color: #111827; }
-.chat-status { font-size: 11px; color: #059669; margin-top: 1px; }
+.chat-title { font-size: 16px; font-weight: 700; color: var(--gray-800); }
+.chat-status { font-size: 11px; color: var(--success); margin-top: 2px; display: flex; align-items: center; gap: 5px; }
+.chat-status::before {
+  content: '';
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 0 3px rgba(47, 138, 95, 0.18);
+}
 
 /* 对话区 */
 .chat-messages {
@@ -171,21 +180,30 @@ const scrollToBottom = async () => {
 
 /* 欢迎区 */
 .welcome-area { text-align: center; padding: 32px 16px 16px; }
-.welcome-icon { margin-bottom: 12px; }
-.welcome-area h4 { font-size: 17px; color: #111827; font-weight: 600; }
-.welcome-desc { font-size: 13px; color: #6b7280; margin: 6px 0 20px; }
+.welcome-icon {
+  margin-bottom: 14px;
+  display: inline-flex;
+  width: 78px; height: 78px;
+  border-radius: 24px;
+  background: var(--primary-50);
+  align-items: center; justify-content: center;
+}
+.welcome-area h4 { font-size: 18px; color: var(--gray-800); font-weight: 700; font-family: var(--font-display); letter-spacing: 0.04em; }
+.welcome-desc { font-size: 13px; color: var(--gray-500); margin: 8px 0 20px; }
 .quick-questions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
 .q-chip {
   padding: 8px 16px;
   border-radius: 18px;
-  background: #eff6ff;
-  color: #2563eb;
+  background: #fff;
+  color: var(--primary-700);
   font-size: 13px;
+  font-weight: 600;
   cursor: pointer;
-  border: 1px solid #dbeafe;
-  transition: all 0.15s;
+  border: 1px solid var(--primary-100);
+  transition: all 0.18s;
 }
-.q-chip:active { background: #dbeafe; transform: scale(0.96); }
+.q-chip:hover { background: var(--primary-50); border-color: var(--primary-300); }
+.q-chip:active { background: var(--primary-100); transform: scale(0.96); }
 
 /* 消息气泡 */
 .msg-item {
@@ -198,37 +216,40 @@ const scrollToBottom = async () => {
 .msg-avatar {
   width: 34px;
   height: 34px;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  border-radius: 11px;
+  background: var(--grad-primary);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 }
 .msg-avatar.user-avatar {
-  background: #f3f4f6;
-  color: #374151;
+  background: var(--accent-bg);
+  color: var(--accent);
   font-size: 14px;
   font-weight: 700;
+  font-family: var(--font-display);
 }
 .msg-bubble {
   max-width: 78%;
   padding: 12px 16px;
-  border-radius: 16px;
+  border-radius: 18px;
   font-size: 14px;
   line-height: 1.6;
   word-break: break-word;
 }
 .msg-item.ai .msg-bubble {
   background: #fff;
-  color: #374151;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-  border-bottom-left-radius: 4px;
+  color: var(--gray-700);
+  border: 1px solid var(--gray-100);
+  box-shadow: var(--shadow-xs);
+  border-bottom-left-radius: 5px;
 }
 .msg-item.user .msg-bubble {
-  background: #2563eb;
+  background: var(--grad-primary);
   color: #fff;
-  border-bottom-right-radius: 4px;
+  border-bottom-right-radius: 5px;
+  box-shadow: 0 6px 14px rgba(13, 148, 136, 0.2);
 }
 
 /* 打字动画 */
@@ -237,7 +258,7 @@ const scrollToBottom = async () => {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #93c5fd;
+  background: var(--primary-300);
   animation: pulse 1.4s infinite;
 }
 .dot:nth-child(2) { animation-delay: 0.2s; }
@@ -247,14 +268,21 @@ const scrollToBottom = async () => {
 /* 输入区 */
 .chat-input-bar {
   padding: 12px 16px;
-  background: #fff;
-  border-top: 1px solid #f3f4f6;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid var(--gray-100);
   flex-shrink: 0;
 }
 .chat-input :deep(.el-input__wrapper) {
   border-radius: 24px !important;
   padding-left: 16px !important;
-  background: #f9fafb;
+  background: var(--cream) !important;
+  box-shadow: 0 0 0 1px var(--gray-200) inset !important;
+}
+.chat-input :deep(.el-input__wrapper.is-focus) {
+  background: #fff !important;
+  box-shadow: var(--ring), 0 0 0 1px var(--primary) inset !important;
 }
 .chat-input :deep(.el-input-group__append) {
   background: transparent;
@@ -270,5 +298,9 @@ const scrollToBottom = async () => {
   align-items: center;
   justify-content: center;
   margin-left: 4px;
+  background: var(--grad-primary) !important;
+  border: none !important;
+  color: #fff !important;
+  box-shadow: 0 6px 14px rgba(13, 148, 136, 0.26);
 }
 </style>

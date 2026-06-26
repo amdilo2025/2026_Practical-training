@@ -3,7 +3,9 @@ package com.diabetes.service.impl;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.diabetes.entity.RiskPrediction;
+import com.diabetes.entity.User;
 import com.diabetes.mapper.RiskPredictionMapper;
+import com.diabetes.mapper.UserMapper;
 import com.diabetes.service.RiskPredictionService;
 import com.diabetes.utils.DifyClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class RiskPredictionServiceImpl implements RiskPredictionService {
 
     @Autowired
     private DifyClient difyClient;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public RiskPrediction getById(Integer id) {
@@ -40,24 +45,29 @@ public class RiskPredictionServiceImpl implements RiskPredictionService {
             prediction.setBmi(Math.round(bmi * 10.0) / 10.0);
         }
 
-        // 调用Dify获取风险预测
-        Map<String, Object> params = new HashMap<>();
-        params.put("age", prediction.getAge());
-        params.put("bmi", prediction.getBmi());
-        params.put("fastingBloodSugar", prediction.getFastingBloodSugar());
-        params.put("postprandialBloodSugar", prediction.getPostprandialBloodSugar());
-        params.put("familyHistory", prediction.getFamilyHistory());
-        params.put("bloodPressureSystolic", prediction.getBloodPressureSystolic());
-        params.put("bloodPressureDiastolic", prediction.getBloodPressureDiastolic());
+        // 从用户档案补全 workflow 所需的 sex / disease 等字段，组装结构化 inputs
+        User user = userMapper.selectById(prediction.getUserId());
+        Map<String, Object> inputs = new HashMap<>();
+        inputs.put("userId", user.getId());
+        inputs.put("age", prediction.getAge());
+        inputs.put("sex", (user.getGender() != null && !user.getGender().isEmpty()) ? user.getGender() : "男");
+        inputs.put("height", prediction.getHeight());
+        inputs.put("weight", prediction.getWeight());
+        inputs.put("familyHistory", (prediction.getFamilyHistory() != null && prediction.getFamilyHistory() == 1) ? "有" : "无");
+        inputs.put("disease", (user.getDiabetesType() != null && !user.getDiabetesType().isEmpty()) ? "是" : "否");
+        inputs.put("fastingBloodSugar", prediction.getFastingBloodSugar());
+        inputs.put("postprandialBloodSugar", prediction.getPostprandialBloodSugar());
+        inputs.put("systolicPressure", prediction.getBloodPressureSystolic());
+        inputs.put("diastolicPressure", prediction.getBloodPressureDiastolic());
 
-        String aiResponse = difyClient.predictRisk(params);
         try {
-            JSONObject json = JSONUtil.parseObj(aiResponse);
-            prediction.setRiskScore(json.getInt("riskScore"));
-            prediction.setRiskLevel(json.getStr("riskLevel"));
-            prediction.setAdvice(json.getStr("advice"));
+            // 调用风险预测 workflow，解析输出 【等级】|评分:XX|建议:...
+            Map<String, Object> outputs = difyClient.runRiskWorkflow(inputs, String.valueOf(user.getId()));
+            String result = outputs.get("result") == null ? "" : outputs.get("result").toString();
+            parseRiskResult(result, prediction);
         } catch (Exception e) {
-            // 如果Dify返回格式不对，使用本地计算
+            // workflow 调用或解析失败，使用本地算法兜底
+            System.err.println("【风险预测workflow调用失败，使用本地兜底】" + e.getMessage());
             int score = calculateRiskScore(prediction);
             prediction.setRiskScore(score);
             prediction.setRiskLevel(score < 30 ? "低风险" : (score < 60 ? "中风险" : "高风险"));
@@ -66,6 +76,20 @@ public class RiskPredictionServiceImpl implements RiskPredictionService {
 
         riskPredictionMapper.insert(prediction);
         return prediction;
+    }
+
+    /** 解析 workflow 输出文本：【低/中/高风险】|评分:数字|建议:内容 */
+    private void parseRiskResult(String result, RiskPrediction p) {
+        // deepseek 可能输出 <think>思考过程</think>，先剔除，避免误匹配草稿
+        String clean = result == null ? "" : result.replaceAll("(?s)<think>.*?</think>", "").trim();
+        java.util.regex.Matcher m = java.util.regex.Pattern.compile(
+                "【(低|中|高)风险】\\|评分:(\\d+)\\|建议:(.+)").matcher(clean);
+        if (!m.find()) {
+            throw new RuntimeException("workflow输出格式无法解析: " + result);
+        }
+        p.setRiskLevel(m.group(1) + "风险");
+        p.setRiskScore(Integer.parseInt(m.group(2)));
+        p.setAdvice(m.group(3).trim());
     }
 
     @Override

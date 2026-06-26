@@ -102,31 +102,39 @@ onMounted(loadHistory);
 
 <style scoped>
 .risk-predict { padding: 16px; max-width: 500px; margin: 0 auto; }
-.page-header h3 { font-size: 20px; margin-bottom: 16px; }
+.page-header h3 { font-size: 22px; margin-bottom: 16px; font-family: var(--font-display); color: var(--gray-900); letter-spacing: 0.04em; }
 .form-card { margin-bottom: 16px; }
-.predict-btn { width: 100%; margin-top: 8px; border-radius: 20px; }
-.result-card { margin-bottom: 16px; padding: 16px; text-align: center; }
-.result-card.高风险 { border-left: 4px solid #f56c6c; }
-.result-card.中风险 { border-left: 4px solid #e6a23c; }
-.result-card.低风险 { border-left: 4px solid #67c23a; }
+.predict-btn {
+  width: 100%;
+  margin-top: 10px;
+  border-radius: 24px;
+  height: 46px;
+  background: var(--grad-primary) !important;
+  border: none !important;
+  box-shadow: 0 8px 18px rgba(13, 148, 136, 0.24);
+}
+.result-card { margin-bottom: 16px; padding: 18px; text-align: center; position: relative; overflow: hidden; }
+.result-card.高风险 { border-left: 4px solid var(--danger); background: linear-gradient(135deg, var(--danger-bg), #fff); }
+.result-card.中风险 { border-left: 4px solid var(--warning); background: linear-gradient(135deg, var(--warning-bg), #fff); }
+.result-card.低风险 { border-left: 4px solid var(--success); background: linear-gradient(135deg, var(--success-bg), #fff); }
 .result-header { margin-bottom: 12px; }
-.risk-badge { font-size: 24px; font-weight: bold; margin-bottom: 4px; }
-.高风险 .risk-badge { color: #f56c6c; }
-.中风险 .risk-badge { color: #e6a23c; }
-.低风险 .risk-badge { color: #67c23a; }
-.risk-score { font-size: 14px; color: #909399; }
-.bmi-info { font-size: 14px; color: #606266; margin-bottom: 8px; }
-.advice { font-size: 14px; color: #606266; line-height: 1.6; text-align: left; padding: 12px; background: #f5f7fa; border-radius: 8px; }
-.history-section { background: #fff; border-radius: 12px; padding: 16px; }
-.section-title { font-size: 15px; font-weight: bold; margin-bottom: 12px; }
-.history-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f0f0f0; cursor: pointer; }
+.risk-badge { font-size: 26px; font-weight: 700; margin-bottom: 6px; font-family: var(--font-display); letter-spacing: 0.06em; }
+.高风险 .risk-badge { color: var(--danger); }
+.中风险 .risk-badge { color: var(--warning); }
+.低风险 .risk-badge { color: var(--success); }
+.risk-score { font-size: 14px; color: var(--gray-700); font-family: var(--font-num); }
+.bmi-info { font-size: 14px; color: var(--gray-800); margin-bottom: 10px; font-weight: 600; }
+.advice { font-size: 14px; color: #0f172a; line-height: 1.65; text-align: left; padding: 12px 14px; background: rgba(255, 255, 255, 0.65); border: 1px solid rgba(34, 211, 238, 0.18); border-radius: 10px; }
+.history-section { background: #fff; border: 1px solid var(--gray-100); border-radius: 16px; padding: 16px; box-shadow: var(--shadow-sm); }
+.section-title { font-size: 15px; font-weight: 700; margin-bottom: 12px; color: var(--gray-700); letter-spacing: 0.03em; }
+.history-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px dashed var(--gray-100); cursor: pointer; }
 .history-item:last-child { border-bottom: none; }
-.history-left { display: flex; align-items: center; gap: 8px; }
-.history-level { padding: 2px 8px; border-radius: 4px; font-size: 12px; color: #fff; }
-.history-level.高风险 { background: #f56c6c; }
-.history-level.中风险 { background: #e6a23c; }
-.history-level.低风险 { background: #67c23a; }
-.history-date { font-size: 13px; color: #909399; }
-.history-right { font-size: 13px; color: #606266; }
-.empty-tip { text-align: center; padding: 24px; color: #909399; }
+.history-left { display: flex; align-items: center; gap: 10px; }
+.history-level { padding: 3px 10px; border-radius: 8px; font-size: 12px; color: #fff; font-weight: 700; letter-spacing: 0.04em; }
+.history-level.高风险 { background: var(--danger); }
+.history-level.中风险 { background: var(--warning); }
+.history-level.低风险 { background: var(--success); }
+.history-date { font-size: 13px; color: var(--gray-400); font-family: var(--font-num); }
+.history-right { font-size: 13px; color: var(--gray-600); font-family: var(--font-num); }
+.empty-tip { text-align: center; padding: 24px; color: var(--gray-400); }
 </style>

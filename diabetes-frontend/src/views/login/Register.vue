@@ -107,72 +107,125 @@ const handleRegister = async () => {
 <style scoped>
 .register-page {
   min-height: 100vh;
-  background: #f7fafc;
   padding: 0 20px;
+  background: transparent;
+  position: relative;
+  z-index: 1;
 }
 .register-container {
   max-width: 420px;
   margin: 0 auto;
-  padding: 24px 0;
+  padding: 28px 0 36px;
+  position: relative;
+  z-index: 2;
+  animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
-.register-header { margin-bottom: 24px; }
+.register-header { margin-bottom: 26px; }
 .back-link {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   font-size: 14px;
-  color: #718096;
+  color: var(--text-light);
   cursor: pointer;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
+  font-weight: 600;
+  padding: 6px 14px 6px 10px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(34, 211, 238, 0.25);
+  backdrop-filter: blur(8px);
+  transition: all 0.2s;
 }
+.back-link:hover { color: var(--cyan-bright); border-color: var(--cyan-bright); background: rgba(34, 211, 238, 0.15); }
 .register-brand h2 {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 700;
-  color: #1a202c;
+  color: var(--text-bright);
+  font-family: var(--font-display);
+  letter-spacing: 0.06em;
+  text-shadow: 0 0 18px rgba(34, 211, 238, 0.45);
 }
 .register-brand p {
   font-size: 14px;
-  color: #718096;
-  margin-top: 6px;
+  color: var(--cyan-bright);
+  margin-top: 8px;
+  letter-spacing: 0.05em;
+  opacity: 0.85;
 }
 .register-card {
-  background: #fff;
-  border-radius: 16px;
-  padding: 24px 20px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  position: relative;
+  background: var(--card-strong);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--card-border);
+  border-radius: 22px;
+  padding: 26px 22px 22px;
+  box-shadow: var(--shadow-xl), 0 0 40px rgba(34, 211, 238, 0.15);
+  overflow: hidden;
+}
+.register-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--grad-glow);
 }
 .register-card :deep(.el-form-item__label) {
   font-size: 13px;
-  font-weight: 500;
-  color: #4a5568;
+  font-weight: 600;
+  color: var(--gray-600);
   padding-bottom: 4px;
+  letter-spacing: 0.03em;
 }
 .register-card :deep(.el-input__wrapper),
 .register-card :deep(.el-select .el-input__wrapper) {
-  border-radius: 10px;
-  box-shadow: 0 0 0 1px #e2e8f0 inset;
+  border-radius: 11px !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.25) inset !important;
 }
 .register-card :deep(.el-input__wrapper:hover) {
-  box-shadow: 0 0 0 1px #3182ce inset;
+  box-shadow: 0 0 0 1px var(--cyan-bright) inset !important;
+}
+.register-card :deep(.el-input__wrapper.is-focus) {
+  background: #fff !important;
+  box-shadow: var(--ring), 0 0 0 1px var(--primary) inset !important;
 }
 .register-btn {
   width: 100%;
-  height: 48px;
-  border-radius: 24px;
+  height: 50px;
+  border-radius: 25px;
   font-size: 16px;
-  font-weight: 600;
-  letter-spacing: 2px;
-  margin-top: 8px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  margin-top: 12px;
+  background: var(--grad-primary) !important;
+  border: none !important;
+  box-shadow: 0 10px 28px rgba(14, 165, 233, 0.45);
 }
+.register-btn:hover { box-shadow: 0 14px 34px rgba(34, 211, 238, 0.6); transform: translateY(-1px); }
 .login-hint {
   text-align: center;
-  margin-top: 20px;
+  margin-top: 22px;
   font-size: 14px;
-  color: #718096;
+  color: var(--text-muted);
 }
 .login-hint a {
-  color: #2b6cb0;
+  color: var(--cyan-bright);
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 700;
+  margin-left: 4px;
+  position: relative;
 }
+.login-hint a::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: -2px;
+  width: 100%; height: 1.5px;
+  background: var(--cyan-bright);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s;
+}
+.login-hint a:hover::after { transform: scaleX(1); }
 </style>

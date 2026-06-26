@@ -32,7 +32,7 @@
     <!-- 打卡统计 -->
     <div class="stats-section anim-fade-up" style="animation-delay:0.1s">
       <div class="stats-header">
-        <el-icon :size="16" color="#2563eb"><DataAnalysis /></el-icon>
+        <el-icon :size="16" color="#0d9488"><DataAnalysis /></el-icon>
         近30天统计
       </div>
       <div class="stats-row">
@@ -65,7 +65,7 @@
     <!-- 打卡分布图表 -->
     <div class="records-section anim-fade-up" style="animation-delay:0.12s">
       <div class="records-header">
-        <el-icon :size="16" color="#2563eb"><DataAnalysis /></el-icon>
+        <el-icon :size="16" color="#0d9488"><DataAnalysis /></el-icon>
         打卡分布
       </div>
       <div ref="pieChartRef" style="height: 200px; width: 100%;"></div>
@@ -74,7 +74,7 @@
     <!-- 打卡记录 -->
     <div class="records-section anim-fade-up" style="animation-delay:0.15s">
       <div class="records-header">
-        <el-icon :size="16" color="#2563eb"><List /></el-icon>
+        <el-icon :size="16" color="#0d9488"><List /></el-icon>
         打卡记录
       </div>
       <div v-if="records.length > 0" class="records-list">
@@ -93,7 +93,7 @@
         </div>
       </div>
       <div v-else class="empty-state">
-        <el-icon :size="36" color="#d1d5db"><Calendar /></el-icon>
+        <el-icon :size="36" color="#b3a487"><Calendar /></el-icon>
         <p>暂无记录，开始打卡吧</p>
       </div>
     </div>
@@ -180,7 +180,7 @@ onMounted(async () => {
           label: { show: true, fontSize: 12, formatter: '{b}' },
           data: data,
           itemStyle: { borderRadius: 6, borderColor: '#fff', borderWidth: 2 },
-          color: ['#2563eb','#059669','#d97706','#7c3aed'],
+          color: ['#0d9488','#c2710c','#2f8a5f','#0c6259'],
           emphasis: { scale: true }
         }]
       });
@@ -201,10 +201,11 @@ onUnmounted(() => {
 /* 今日打卡 */
 .today-section {
   background: #fff;
-  border-radius: 18px;
+  border: 1px solid var(--gray-100);
+  border-radius: 20px;
   padding: 18px;
   margin-bottom: 14px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  box-shadow: var(--shadow-sm);
 }
 .today-header {
   display: flex;
@@ -212,8 +213,8 @@ onUnmounted(() => {
   align-items: center;
   margin-bottom: 16px;
 }
-.today-label { font-size: 15px; font-weight: 600; color: #111827; }
-.today-date { font-size: 12px; color: #9ca3af; }
+.today-label { font-size: 15px; font-weight: 700; color: var(--gray-800); }
+.today-date { font-size: 12px; color: var(--gray-400); letter-spacing: 0.04em; }
 .checkin-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
 .checkin-item {
   display: flex;
@@ -221,115 +222,120 @@ onUnmounted(() => {
   align-items: center;
   gap: 8px;
   padding: 14px 8px;
-  border-radius: 14px;
-  background: #f9fafb;
+  border-radius: 15px;
+  background: var(--cream);
   cursor: pointer;
   transition: all 0.2s;
   border: 1.5px solid transparent;
 }
 .checkin-item:active { transform: scale(0.95); }
 .checkin-item.done {
-  background: #f0fdf4;
-  border-color: #bbf7d0;
+  background: var(--success-bg);
+  border-color: #b6ebcf;
 }
 .checkin-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 20px;
   background: #fff;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  box-shadow: var(--shadow-xs);
 }
-.checkin-icon.diet { background: #fff7ed; }
-.checkin-icon.exercise { background: #eff6ff; }
-.checkin-icon.medication { background: #fdf2f8; }
-.checkin-icon.measure { background: #fef3c7; }
-.checkin-label { font-size: 12px; color: #374151; font-weight: 500; }
+.checkin-icon.diet { background: var(--accent-bg); }
+.checkin-icon.exercise { background: var(--primary-50); }
+.checkin-icon.medication { background: #e7f6f1; }
+.checkin-icon.measure { background: var(--warning-bg); }
+.checkin-label { font-size: 12px; color: var(--gray-700); font-weight: 600; }
 .checkin-badge {
   font-size: 10px;
-  padding: 2px 8px;
-  border-radius: 8px;
-  background: #059669;
+  padding: 2px 9px;
+  border-radius: 9px;
+  background: var(--success);
   color: #fff;
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: 0.04em;
 }
-.checkin-badge.pending { background: #e5e7eb; color: #6b7280; }
+.checkin-badge.pending { background: var(--gray-100); color: var(--gray-500); }
 
 /* 统计 */
 .stats-section {
   background: #fff;
-  border-radius: 18px;
+  border: 1px solid var(--gray-100);
+  border-radius: 20px;
   padding: 18px;
   margin-bottom: 14px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  box-shadow: var(--shadow-sm);
 }
 .stats-header {
   font-size: 14px;
-  font-weight: 600;
-  color: #374151;
+  font-weight: 700;
+  color: var(--gray-700);
   margin-bottom: 16px;
   display: flex;
   align-items: center;
   gap: 6px;
+  letter-spacing: 0.03em;
 }
 .stats-row { display: flex; justify-content: space-around; margin-bottom: 18px; }
 .stats-item { text-align: center; }
-.stats-num { font-size: 28px; font-weight: 700; color: #2563eb; }
-.stats-unit { font-size: 14px; color: #93c5fd; font-weight: 400; }
-.stats-label { font-size: 12px; color: #9ca3af; margin-top: 2px; }
+.stats-num { font-size: 30px; font-weight: 700; color: var(--primary); font-family: var(--font-num); line-height: 1.1; }
+.stats-unit { font-size: 14px; color: var(--primary-300); font-weight: 400; }
+.stats-label { font-size: 12px; color: var(--gray-500); margin-top: 4px; letter-spacing: 0.04em; }
 
-.type-stats { display: flex; flex-direction: column; gap: 10px; }
+.type-stats { display: flex; flex-direction: column; gap: 12px; }
 .type-stat { }
-.type-stat-top { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; }
-.type-name { color: #374151; font-weight: 500; }
-.type-count { color: #9ca3af; }
+.type-stat-top { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 5px; }
+.type-name { color: var(--gray-700); font-weight: 600; }
+.type-count { color: var(--gray-400); font-family: var(--font-num); }
 .progress-bar {
-  height: 6px;
-  background: #f3f4f6;
-  border-radius: 3px;
+  height: 7px;
+  background: var(--gray-100);
+  border-radius: 4px;
   overflow: hidden;
 }
 .progress-fill {
   height: 100%;
-  border-radius: 3px;
-  transition: width 0.5s;
+  border-radius: 4px;
+  transition: width 0.6s cubic-bezier(0.16,1,0.3,1);
 }
-.progress-fill.diet { background: linear-gradient(90deg, #f59e0b, #d97706); }
-.progress-fill.exercise { background: linear-gradient(90deg, #3b82f6, #2563eb); }
-.progress-fill.medication { background: linear-gradient(90deg, #ec4899, #db2777); }
-.progress-fill.measure { background: linear-gradient(90deg, #10b981, #059669); }
+.progress-fill.diet { background: linear-gradient(90deg, #e8920f, #c2710c); }
+.progress-fill.exercise { background: linear-gradient(90deg, #2dbf92, #0d9488); }
+.progress-fill.medication { background: linear-gradient(90deg, #0c6259, #115e59); }
+.progress-fill.measure { background: linear-gradient(90deg, #5bbf83, #2f8a5f); }
 
 /* 记录 */
 .records-section {
   background: #fff;
-  border-radius: 18px;
+  border: 1px solid var(--gray-100);
+  border-radius: 20px;
   padding: 18px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  box-shadow: var(--shadow-sm);
 }
 .records-header {
   font-size: 14px;
-  font-weight: 600;
-  color: #374151;
+  font-weight: 700;
+  color: var(--gray-700);
   margin-bottom: 14px;
   display: flex;
   align-items: center;
   gap: 6px;
+  letter-spacing: 0.03em;
 }
 .record-item {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 12px 0;
-  border-bottom: 1px solid #f9fafb;
+  border-bottom: 1px dashed var(--gray-100);
 }
 .record-item:last-child { border-bottom: none; }
 .record-icon { font-size: 22px; width: 36px; text-align: center; }
 .record-info { flex: 1; }
 .record-top { display: flex; justify-content: space-between; margin-bottom: 2px; }
-.record-type { font-size: 13px; font-weight: 500; color: #374151; }
-.record-date { font-size: 11px; color: #9ca3af; }
-.record-content { font-size: 12px; color: #6b7280; }
+.record-type { font-size: 13px; font-weight: 600; color: var(--gray-700); }
+.record-date { font-size: 11px; color: var(--gray-400); font-family: var(--font-num); }
+.record-content { font-size: 12px; color: var(--gray-500); }
 </style>

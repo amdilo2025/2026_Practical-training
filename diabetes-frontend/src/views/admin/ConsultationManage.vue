@@ -74,6 +74,7 @@ onMounted(loadData);
 
 <style scoped>
 .consult-manage { max-width: 600px; margin: 0 auto; }
-.page-title { font-size: 20px; margin-bottom: 16px; }
-.consult-question { background: #f5f7fa; padding: 12px; border-radius: 8px; font-size: 14px; line-height: 1.6; }
+.page-title { font-size: 22px; margin-bottom: 18px; font-family: var(--font-display); color: var(--gray-900); letter-spacing: 0.04em; }
+.consult-question { background: var(--primary-50); border-left: 3px solid var(--primary); padding: 12px 14px; border-radius: 0 10px 10px 0; font-size: 14px; line-height: 1.65; color: var(--gray-700); }
+.consult-question :deep(strong) { color: var(--primary-700); }
 </style>

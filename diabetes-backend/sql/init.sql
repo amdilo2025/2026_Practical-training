@@ -49,6 +49,7 @@ CREATE TABLE IF NOT EXISTS `doctor` (
     introduction TEXT DEFAULT NULL COMMENT '医师简介',
     good_at VARCHAR(255) DEFAULT NULL COMMENT '擅长领域',
     status VARCHAR(10) DEFAULT '在职' COMMENT '状态(在职/离职)',
+    is_ai TINYINT(1) DEFAULT 0 COMMENT '是否AI医生(0否/1是)',
     created_time DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='医师表';
 
@@ -178,15 +179,19 @@ INSERT INTO admin (username, password, name, phone, role) VALUES
 ('admin', 'e10adc3949ba59abbe56e057f20f883e', '系统管理员', '13900000001', '超级管理员');
 
 -- 3. 测试医师（扩充到8位）
-INSERT INTO doctor (name, department, title, phone, introduction, good_at) VALUES
-('赵建国', '内分泌科', '主任医师', '13700000001', '从事糖尿病临床诊疗25年，中华医学会糖尿病分会委员', '糖尿病诊断与治疗、胰岛素泵精细调控'),
-('钱华', '内分泌科', '副主任医师', '13700000002', '专注糖尿病并发症研究十余年，发表SCI论文12篇', '糖尿病足、糖尿病视网膜病变、神经病变'),
-('孙丽', '营养科', '主治医师', '13700000003', '国家注册营养师，擅长糖尿病医学营养治疗', '糖尿病饮食方案定制、营养咨询与教育'),
-('李强', '内分泌科', '主任医师', '13700000004', '三甲医院内分泌科主任，糖尿病治疗领域专家', '难治性糖尿病、甲状腺疾病、代谢综合征'),
-('周敏', '心血管科', '副主任医师', '13700000005', '擅长糖尿病合并心血管疾病的综合治疗', '糖尿病合并高血压、冠心病、血脂异常'),
-('吴晓', '中医科', '主治医师', '13700000006', '中西医结合治疗糖尿病，中医调理慢性并发症', '糖尿病中医调理、中药辅助降糖'),
-('郑明', '内分泌科', '主治医师', '13700000007', '糖尿病教育与管理专家，擅长患者自我管理指导', '糖尿病自我管理、血糖监测与用药指导'),
-('陈芳', '运动康复科', '主治医师', '13700000008', '运动医学硕士，擅长糖尿病运动处方制定', '糖尿病运动康复、运动风险评估');
+INSERT INTO doctor (name, department, title, phone, introduction, good_at, avatar) VALUES
+('赵建国', '内分泌科', '主任医师', '13700000001', '从事糖尿病临床诊疗25年，中华医学会糖尿病分会委员', '糖尿病诊断与治疗、胰岛素泵精细调控', 'https://images.unsplash.com/photo-1642975967602-653d378f3b5b?w=200&h=200&fit=crop&crop=faces&q=80'),
+('钱华', '内分泌科', '副主任医师', '13700000002', '专注糖尿病并发症研究十余年，发表SCI论文12篇', '糖尿病足、糖尿病视网膜病变、神经病变', 'https://images.unsplash.com/photo-1659353885824-1199aeeebfc6?w=200&h=200&fit=crop&crop=faces&q=80'),
+('孙丽', '营养科', '主治医师', '13700000003', '国家注册营养师，擅长糖尿病医学营养治疗', '糖尿病饮食方案定制、营养咨询与教育', 'https://plus.unsplash.com/premium_photo-1664475450083-5c9eef17a191?w=200&h=200&fit=crop&crop=faces&q=80'),
+('李强', '内分泌科', '主任医师', '13700000004', '三甲医院内分泌科主任，糖尿病治疗领域专家', '难治性糖尿病、甲状腺疾病、代谢综合征', 'https://images.unsplash.com/photo-1659353888306-e06177765540?w=200&h=200&fit=crop&crop=faces&q=80'),
+('周敏', '心血管科', '副主任医师', '13700000005', '擅长糖尿病合并心血管疾病的综合治疗', '糖尿病合并高血压、冠心病、血脂异常', 'https://images.unsplash.com/photo-1638202993928-7267aad84c31?w=200&h=200&fit=crop&crop=faces&q=80'),
+('吴晓', '中医科', '主治医师', '13700000006', '中西医结合治疗糖尿病，中医调理慢性并发症', '糖尿病中医调理、中药辅助降糖', 'https://images.unsplash.com/photo-1576669802218-d535933f897c?w=200&h=200&fit=crop&crop=faces&q=80'),
+('郑明', '内分泌科', '主治医师', '13700000007', '糖尿病教育与管理专家，擅长患者自我管理指导', '糖尿病自我管理、血糖监测与用药指导', 'https://images.unsplash.com/photo-1659353887804-fc7f9313021a?w=200&h=200&fit=crop&crop=faces&q=80'),
+('陈芳', '运动康复科', '主治医师', '13700000008', '运动医学硕士，擅长糖尿病运动处方制定', '糖尿病运动康复、运动风险评估', 'https://images.unsplash.com/photo-1606619788433-2ba22e49d498?w=200&h=200&fit=crop&crop=faces&q=80');
+
+-- AI 医生（赵晓峰，列表置顶 + 优先推荐）
+INSERT INTO doctor (name, department, title, phone, introduction, good_at, is_ai, avatar) VALUES
+('赵晓峰', '内分泌科', '主任医师', '13700000000', 'AI 内科主任医生，基于 DeepSeek 大模型，7×24 小时在线，擅长糖尿病预防与治疗咨询', '糖尿病风险评估、饮食运动指导、用药咨询', 1, 'https://images.unsplash.com/photo-1645066928295-2506defde470?w=200&h=200&fit=crop&crop=faces&q=80');
 
 -- 4. 测试健康资讯（扩充到14篇，内容丰富）
 INSERT INTO health_article (title, summary, content, category, author, views) VALUES

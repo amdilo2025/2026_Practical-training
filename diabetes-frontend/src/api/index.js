@@ -65,14 +65,14 @@ export const doctorApi = {
 export const consultationApi = {
   listByUser: (userId) => api.get(`/consultation/listByUser/${userId}`),
   getById: (id) => api.get(`/consultation/get/${id}`),
-  add: (data) => api.post("/consultation/add", data),
+  add: (data) => api.post("/consultation/add", data, { timeout: 60000 }),
   reply: (data) => api.put("/consultation/reply", data),
   listAll: () => api.get("/consultation/listAll"),
 };
 
 // ==================== 风险预测模块 ====================
 export const riskApi = {
-  predict: (data) => api.post("/risk/predict", data),
+  predict: (data) => api.post("/risk/predict", data, { timeout: 60000 }),
   listByUser: (userId) => api.get(`/risk/list/${userId}`),
   trend: (userId) => api.get(`/risk/trend/${userId}`),
   getById: (id) => api.get(`/risk/get/${id}`),

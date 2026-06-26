@@ -7,7 +7,7 @@
     </div>
 
     <div v-if="article" class="detail-content anim-fade-up">
-      <div class="detail-cover" :style="{ background: `linear-gradient(135deg, #2b6cb0, #1a365d)` }">
+      <div class="detail-cover" :style="{ background: `linear-gradient(135deg, #0f766e, #0c6259)` }">
         <span class="detail-category-tag">{{ article.category }}</span>
       </div>
       <div class="detail-body-wrap">
@@ -53,35 +53,49 @@ onMounted(async () => {
 .detail-header {
   position: sticky;
   top: 0;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   z-index: 10;
-  padding: 8px 16px;
-  border-bottom: 1px solid #edf2f7;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--gray-100);
 }
-.back-btn { color: #4a5568; font-size: 14px; }
+.back-btn { color: var(--gray-600); font-size: 14px; font-weight: 600; }
+.back-btn:hover { color: var(--primary); }
 .detail-cover {
-  height: 180px;
+  height: 184px;
   display: flex;
   align-items: flex-start;
   justify-content: flex-end;
   padding: 16px;
+  position: relative;
 }
 .detail-category-tag {
-  background: rgba(255,255,255,0.9);
-  backdrop-filter: blur(4px);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(6px);
   padding: 6px 16px;
   border-radius: 16px;
   font-size: 13px;
-  font-weight: 600;
-  color: #2b6cb0;
+  font-weight: 700;
+  color: var(--primary-700);
+  letter-spacing: 0.04em;
 }
-.detail-body-wrap { padding: 20px 16px; }
-.detail-title { font-size: 22px; font-weight: 700; line-height: 1.35; margin-bottom: 12px; color: #1a202c; }
-.detail-meta { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #a0aec0; margin-bottom: 20px; }
-.meta-divider { color: #e2e8f0; }
-.detail-body { font-size: 15px; line-height: 1.8; color: #2d3748; }
-.detail-body img { max-width: 100%; border-radius: 10px; margin: 16px 0; }
-.detail-body h3 { font-size: 18px; margin: 20px 0 10px; color: #1a202c; }
-.detail-body p { margin-bottom: 12px; }
+.detail-body-wrap {
+  padding: 22px 16px 8px;
+  background: var(--card);
+  border-radius: 22px 22px 0 0;
+  margin-top: -10px;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 -6px 18px rgba(120, 90, 40, 0.06);
+}
+.detail-title { font-size: 24px; font-weight: 700; line-height: 1.35; margin-bottom: 12px; color: var(--gray-900); font-family: var(--font-display); letter-spacing: 0.03em; }
+.detail-meta { display: flex; align-items: center; gap: 7px; font-size: 13px; color: var(--gray-400); margin-bottom: 20px; }
+.detail-meta .meta-author { color: var(--primary-700); font-weight: 600; }
+.meta-divider { color: var(--gray-200); }
+.detail-body { font-size: 15px; line-height: 1.85; color: var(--gray-700); }
+.detail-body img { max-width: 100%; border-radius: 12px; margin: 16px 0; }
+.detail-body h3 { font-size: 18px; margin: 22px 0 10px; color: var(--gray-900); font-family: var(--font-display); }
+.detail-body p { margin-bottom: 14px; }
 .loading-state { padding: 20px 16px; }
 </style>

@@ -23,6 +23,8 @@ public class Doctor {
     private String goodAt;
     @TableField("status")
     private String status;
+    @TableField("is_ai")
+    private Integer isAi;
     @TableField(value = "created_time", fill = FieldFill.INSERT)
     private LocalDateTime createdTime;
 
@@ -44,6 +46,8 @@ public class Doctor {
     public void setGoodAt(String goodAt) { this.goodAt = goodAt; }
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+    public Integer getIsAi() { return isAi; }
+    public void setIsAi(Integer isAi) { this.isAi = isAi; }
     public LocalDateTime getCreatedTime() { return createdTime; }
     public void setCreatedTime(LocalDateTime createdTime) { this.createdTime = createdTime; }
 }

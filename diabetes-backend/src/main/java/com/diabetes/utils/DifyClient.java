@@ -17,6 +17,12 @@ public class DifyClient {
     @Value("${dify.api-key:}")
     private String apiKey;
 
+    @Value("${dify.risk-api-key:}")
+    private String riskApiKey;
+
+    @Value("${dify.doctor-api-key:}")
+    private String doctorApiKey;
+
     private final RestTemplate restTemplate;
 
     public DifyClient() {
@@ -24,19 +30,27 @@ public class DifyClient {
     }
 
     /**
-     * 调用Dify对话API，返回Map包含answer和conversation_id
+     * 智能助手对话（原有逻辑，使用 dify.api-key）
      */
     public Map<String, String> chat(String query, String userId, String conversationId) {
+        return chatWith(query, userId, conversationId, new HashMap<>(), apiKey);
+    }
+
+    /**
+     * 通用对话接口：可传入 inputs（开场变量）和指定应用的 API key。赵晓峰医生使用。
+     * 返回 Map 包含 answer 和 conversation_id
+     */
+    public Map<String, String> chatWith(String query, String userId, String conversationId,
+                                        Map<String, Object> inputs, String token) {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.set("Authorization", "Bearer " + apiKey);
+            headers.set("Authorization", "Bearer " + token);
 
             Map<String, Object> body = new HashMap<>();
-            body.put("inputs", new HashMap<>());
+            body.put("inputs", inputs == null ? new HashMap<>() : inputs);
             body.put("query", query);
             body.put("user", userId);
-            // 仅当conversationId有效且不是"new"时才传递
             if (conversationId != null && !conversationId.isEmpty() && !"new".equals(conversationId)) {
                 body.put("conversation_id", conversationId);
             }
@@ -56,8 +70,7 @@ public class DifyClient {
             }
             return result;
         } catch (Exception e) {
-            System.err.println("【Dify调用失败】" + e.getMessage());
-            e.printStackTrace();
+            System.err.println("【Dify对话调用失败】" + e.getMessage());
             Map<String, String> result = new HashMap<>();
             result.put("answer", getMockResponse(query));
             result.put("conversation_id", conversationId);
@@ -66,42 +79,51 @@ public class DifyClient {
     }
 
     /**
-     * 调用Dify进行风险预测
+     * 调用风险预测 workflow（使用 dify.risk-api-key）
+     * 返回 workflow 的 outputs（含 result、disease）
      */
-    public String predictRisk(Map<String, Object> params) {
-        try {
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            headers.set("Authorization", "Bearer " + apiKey);
+    public Map<String, Object> runRiskWorkflow(Map<String, Object> inputs, String userId) {
+        return runWorkflow(inputs, userId, riskApiKey);
+    }
 
-            StringBuilder query = new StringBuilder();
-            query.append("根据以下数据预测糖尿病风险：");
-            params.forEach((k, v) -> query.append(k).append(":").append(v).append(","));
+    /**
+     * 通用 workflow 执行：POST /workflows/run，blocking 模式，返回 data.outputs
+     */
+    @SuppressWarnings("unchecked")
+    public Map<String, Object> runWorkflow(Map<String, Object> inputs, String userId, String token) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.set("Authorization", "Bearer " + token);
 
-            Map<String, Object> body = new HashMap<>();
-            body.put("inputs", new HashMap<>());
-            body.put("query", query.toString());
-            body.put("user", "risk_prediction");
-            body.put("response_mode", "blocking");
+        Map<String, Object> body = new HashMap<>();
+        body.put("inputs", inputs == null ? new HashMap<>() : inputs);
+        body.put("user", userId);
+        body.put("response_mode", "blocking");
 
-            HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
-            ResponseEntity<Map> response = restTemplate.postForEntity(
-                    apiUrl + "/chat-messages", request, Map.class);
+        HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
+        ResponseEntity<Map> response = restTemplate.postForEntity(
+                apiUrl + "/workflows/run", request, Map.class);
 
-            if (response.getBody() != null) {
-                return (String) response.getBody().get("answer");
-            }
-        } catch (Exception e) {
-            System.err.println("【Dify风险预测失败】" + e.getMessage());
-            return getMockRiskResponse(params);
+        if (response.getBody() == null) {
+            throw new RuntimeException("Dify workflow 无响应");
         }
-        return null;
+        Map<String, Object> data = (Map<String, Object>) response.getBody().get("data");
+        if (data == null) {
+            throw new RuntimeException("Dify workflow 响应缺少 data");
+        }
+        Object outputs = data.get("outputs");
+        return outputs instanceof Map ? (Map<String, Object>) outputs : new HashMap<>();
+    }
+
+    public String getDoctorApiKey() {
+        return doctorApiKey;
     }
 
     /**
      * 模拟AI回答（当Dify不可用时）
      */
     private String getMockResponse(String query) {
+        if (query == null) return "您好，我是赵晓峰医生助手，请问有什么可以帮您？";
         if (query.contains("饮食") || query.contains("吃")) {
             return "建议您控制总热量摄入，多食蔬菜和全谷物，减少高糖高脂食物。每日三餐定时定量，可少食多餐。";
         } else if (query.contains("运动")) {
@@ -111,38 +133,7 @@ public class DifyClient {
         } else if (query.contains("药")) {
             return "请严格遵医嘱用药，不可自行增减药量或停药。定期复查血糖和肝肾功能。";
         } else {
-            return "您好！我是糖尿病智能助手。关于您的问题，建议您保持良好的生活习惯，定期监测血糖，遵医嘱用药。如有不适请及时就医。";
+            return "您好！我是内科主任赵晓峰。关于您的问题，建议保持良好的生活习惯，定期监测血糖，遵医嘱用药。如有不适请及时就医。";
         }
-    }
-
-    /**
-     * 模拟风险预测（当Dify不可用时）
-     */
-    private String getMockRiskResponse(Map<String, Object> params) {
-        double riskScore = 0;
-        double bmi = params.containsKey("bmi") ? Double.parseDouble(params.get("bmi").toString()) : 24;
-        if (bmi > 28) riskScore += 30;
-        else if (bmi > 24) riskScore += 15;
-
-        double bloodSugar = params.containsKey("fastingBloodSugar") ? Double.parseDouble(params.get("fastingBloodSugar").toString()) : 5.6;
-        if (bloodSugar > 7.0) riskScore += 30;
-        else if (bloodSugar > 6.1) riskScore += 15;
-
-        if (params.containsKey("familyHistory") && "1".equals(params.get("familyHistory").toString())) riskScore += 15;
-
-        int age = params.containsKey("age") ? Integer.parseInt(params.get("age").toString()) : 30;
-        if (age > 50) riskScore += 15;
-        else if (age > 40) riskScore += 10;
-        else if (age > 30) riskScore += 5;
-
-        String level = riskScore < 30 ? "低风险" : (riskScore < 60 ? "中风险" : "高风险");
-
-        return String.format(
-                "{\"riskScore\": %.0f, \"riskLevel\": \"%s\", \"advice\": \"%s\"}",
-                riskScore, level,
-                level.equals("高风险") ? "您属于糖尿病高风险人群，建议及时就医进行全面检查。"
-                        : level.equals("中风险") ? "您存在一定的糖尿病风险，建议改善生活习惯，定期监测血糖。"
-                        : "您目前糖尿病风险较低，请继续保持良好的生活习惯。"
-        );
     }
 }

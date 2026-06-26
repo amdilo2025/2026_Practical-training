@@ -12,7 +12,7 @@ import java.util.Map;
 @Mapper
 public interface ConsultationMapper extends BaseMapper<Consultation> {
 
-    @Select("SELECT c.*, d.name as doctor_name, d.title as doctor_title, d.department as doctor_department " +
+    @Select("SELECT c.*, d.name as doctor_name, d.title as doctor_title, d.department as doctor_department, d.avatar as doctor_avatar " +
             "FROM consultation c LEFT JOIN doctor d ON c.doctor_id = d.id " +
             "WHERE c.user_id = #{userId} ORDER BY c.created_time DESC")
     List<Map<String, Object>> selectConsultationsWithDoctor(@Param("userId") Integer userId);

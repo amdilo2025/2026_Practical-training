@@ -110,7 +110,7 @@ onMounted(loadData);
 
 <style scoped>
 .article-manage { max-width: 600px; margin: 0 auto; }
-.page-title { font-size: 20px; margin-bottom: 16px; }
-.page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.page-title { font-size: 22px; margin-bottom: 18px; font-family: var(--font-display); color: var(--gray-900); letter-spacing: 0.04em; }
+.page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
 .page-header .page-title { margin-bottom: 0; }
 </style>

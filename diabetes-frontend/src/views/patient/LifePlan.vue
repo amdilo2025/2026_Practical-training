@@ -14,7 +14,7 @@
           <div class="plan-content" v-html="renderContent(dietPlan.content)"></div>
         </el-card>
         <div v-else class="empty-plan">
-          <el-icon :size="48" color="#c0c4cc"><Food /></el-icon>
+          <el-icon :size="48" color="#b3a487"><Food /></el-icon>
           <p>暂无饮食方案</p>
           <el-button type="primary" @click="generatePlan('diet')" :loading="genLoading">AI生成方案</el-button>
         </div>
@@ -31,7 +31,7 @@
           <div class="plan-content" v-html="renderContent(exercisePlan.content)"></div>
         </el-card>
         <div v-else class="empty-plan">
-          <el-icon :size="48" color="#c0c4cc"><Help /></el-icon>
+          <el-icon :size="48" color="#b3a487"><Help /></el-icon>
           <p>暂无运动方案</p>
           <el-button type="primary" @click="generatePlan('exercise')" :loading="genLoading">AI生成方案</el-button>
         </div>
@@ -115,19 +115,22 @@ onMounted(loadPlans);
 
 <style scoped>
 .life-plan { padding: 16px; max-width: 500px; margin: 0 auto; }
-.page-header h3 { font-size: 20px; margin-bottom: 16px; }
+.page-header h3 { font-size: 22px; margin-bottom: 16px; font-family: var(--font-display); color: var(--gray-900); letter-spacing: 0.04em; }
 .plan-card { margin-bottom: 16px; }
 .plan-header { display: flex; justify-content: space-between; align-items: center; }
-.plan-content { font-size: 14px; line-height: 1.8; }
-.plan-content ul { padding-left: 20px; }
-.empty-plan { text-align: center; padding: 40px 0; }
-.empty-plan p { color: #909399; margin: 12px 0 16px; }
-.history-section { background: #fff; border-radius: 12px; padding: 16px; }
-.section-title { font-size: 15px; font-weight: bold; margin-bottom: 12px; }
-.history-item { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid #f0f0f0; }
+.plan-header span { font-weight: 700; color: var(--gray-800); font-family: var(--font-display); letter-spacing: 0.03em; }
+.plan-content { font-size: 14px; line-height: 1.85; color: var(--gray-700); }
+.plan-content :deep(strong) { color: var(--primary-700); }
+.plan-content ul { padding-left: 20px; margin: 4px 0; }
+.plan-content li { margin-bottom: 3px; }
+.empty-plan { text-align: center; padding: 44px 0; }
+.empty-plan p { color: var(--gray-400); margin: 14px 0 18px; }
+.history-section { background: #fff; border: 1px solid var(--gray-100); border-radius: 16px; padding: 16px; box-shadow: var(--shadow-sm); }
+.section-title { font-size: 15px; font-weight: 700; margin-bottom: 12px; color: var(--gray-700); letter-spacing: 0.03em; }
+.history-item { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px dashed var(--gray-100); }
 .history-item:last-child { border-bottom: none; }
 .plan-info { flex: 1; }
-.plan-name { font-size: 14px; }
-.plan-date { font-size: 12px; color: #909399; margin-top: 2px; }
-.empty-tip { text-align: center; padding: 24px; color: #909399; }
+.plan-name { font-size: 14px; font-weight: 600; color: var(--gray-700); }
+.plan-date { font-size: 12px; color: var(--gray-400); margin-top: 2px; font-family: var(--font-num); }
+.empty-tip { text-align: center; padding: 24px; color: var(--gray-400); }
 </style>

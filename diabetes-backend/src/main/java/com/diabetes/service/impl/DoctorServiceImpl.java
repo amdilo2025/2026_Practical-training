@@ -1,5 +1,6 @@
 package com.diabetes.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.diabetes.entity.Doctor;
 import com.diabetes.mapper.DoctorMapper;
 import com.diabetes.service.DoctorService;
@@ -16,7 +17,8 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public List<Doctor> listAll() {
-        return doctorMapper.selectList(null);
+        // AI 医生（赵晓峰）置顶，其余按 id 升序
+        return doctorMapper.selectList(new QueryWrapper<Doctor>().orderByDesc("is_ai").orderByAsc("id"));
     }
 
     @Override

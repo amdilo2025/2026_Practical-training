@@ -1,0 +1,20 @@
+# ===== 前端 =====
+diabetes-frontend/node_modules/
+diabetes-frontend/dist/
+diabetes-frontend/.local
+diabetes-frontend/npm-debug.log*
+diabetes-frontend/yarn-error.log*
+
+# ===== 后端 =====
+diabetes-backend/target/
+diabetes-backend/.idea/
+diabetes-backend/**/*.iml
+*.class
+*.log
+
+# ===== 敏感配置（公开仓库，不提交真实数据库密码 / Dify API key）=====
+diabetes-backend/src/main/resources/application.properties
+
+# ===== 系统 =====
+.DS_Store
+Thumbs.db

@@ -38,7 +38,7 @@
     <!-- 个人信息 -->
     <div class="info-card anim-fade-up" style="animation-delay:0.08s">
       <div class="info-card-title">
-        <el-icon :size="16" color="#2563eb"><User /></el-icon>
+        <el-icon :size="16" color="#0d9488"><User /></el-icon>
         基本信息
       </div>
       <div class="info-grid">
@@ -176,76 +176,87 @@ onMounted(loadInfo);
 .profile-card {
   position: relative;
   background: #fff;
-  border-radius: 20px;
+  border: 1px solid var(--gray-100);
+  border-radius: 22px;
   overflow: hidden;
   margin-bottom: 16px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  box-shadow: var(--shadow-md);
 }
 .profile-bg {
-  height: 80px;
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  height: 84px;
+  background: var(--grad-primary);
+  position: relative;
+}
+.profile-bg::after {
+  content: '';
+  position: absolute;
+  right: -32px; top: -32px;
+  width: 134px; height: 134px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(194, 113, 12, 0.34), transparent 70%);
 }
 .profile-content {
   display: flex;
   align-items: center;
   gap: 16px;
   padding: 0 20px;
-  margin-top: -32px;
+  margin-top: -34px;
+  position: relative;
 }
 .profile-avatar {
-  width: 64px;
-  height: 64px;
+  width: 66px;
+  height: 66px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #2563eb, #60a5fa);
+  background: var(--grad-primary);
   display: flex;
   align-items: center;
   justify-content: center;
   border: 3px solid #fff;
-  box-shadow: 0 2px 8px rgba(37,99,235,0.2);
+  box-shadow: 0 6px 16px rgba(13, 148, 136, 0.28);
 }
-.profile-avatar span { font-size: 24px; font-weight: 700; color: #fff; }
-.profile-info { padding-top: 28px; }
-.profile-info h4 { font-size: 18px; font-weight: 700; color: #111827; }
-.profile-info p { font-size: 13px; color: #9ca3af; margin-top: 2px; }
+.profile-avatar span { font-size: 25px; font-weight: 700; color: #fff; font-family: var(--font-display); }
+.profile-info { padding-top: 30px; }
+.profile-info h4 { font-size: 19px; font-weight: 700; color: var(--gray-900); }
+.profile-info p { font-size: 13px; color: var(--gray-400); margin-top: 3px; letter-spacing: 0.04em; }
 
 .profile-stats {
   display: flex;
-  margin: 16px 20px 0;
-  padding: 16px 0;
-  border-top: 1px solid #f3f4f6;
+  margin: 18px 20px 4px;
+  padding: 16px 0 4px;
+  border-top: 1px dashed var(--gray-100);
 }
 .stat-item { flex: 1; text-align: center; }
-.stat-val { font-size: 18px; font-weight: 700; color: #2563eb; }
-.stat-lbl { font-size: 12px; color: #9ca3af; margin-top: 2px; }
-.stat-divider { width: 1px; background: #f3f4f6; }
+.stat-val { font-size: 20px; font-weight: 700; color: var(--primary); font-family: var(--font-num); }
+.stat-lbl { font-size: 12px; color: var(--gray-500); margin-top: 2px; letter-spacing: 0.04em; }
+.stat-divider { width: 1px; background: var(--gray-100); }
 
 /* 信息网格 */
 .info-grid { display: flex; flex-direction: column; gap: 4px; }
-.info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f9fafb; }
+.info-row { display: flex; justify-content: space-between; padding: 11px 0; border-bottom: 1px dashed var(--gray-100); }
 .info-row:last-child { border-bottom: none; }
-.info-label { font-size: 14px; color: #6b7280; }
-.info-value { font-size: 14px; color: #111827; font-weight: 500; }
+.info-label { font-size: 14px; color: var(--gray-500); }
+.info-value { font-size: 14px; color: var(--gray-800); font-weight: 600; }
 
 /* 操作列表 */
-.action-list { background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
-.action-item { display: flex; align-items: center; justify-content: space-between; padding: 16px 18px; border-bottom: 1px solid #f9fafb; cursor: pointer; transition: background 0.15s; }
-.action-item:active { background: #f9fafb; }
+.action-list { background: #fff; border: 1px solid var(--gray-100); border-radius: 18px; overflow: hidden; box-shadow: var(--shadow-sm); }
+.action-item { display: flex; align-items: center; justify-content: space-between; padding: 16px 18px; border-bottom: 1px solid var(--gray-50); cursor: pointer; transition: background 0.15s; }
+.action-item:active { background: var(--cream-2); }
 .action-item:last-child { border-bottom: none; }
-.action-left { display: flex; align-items: center; gap: 12px; }
-.action-left span { font-size: 15px; color: #374151; font-weight: 500; }
-.action-item.danger .action-left span { color: #dc2626; }
+.action-left { display: flex; align-items: center; gap: 13px; }
+.action-left span { font-size: 15px; color: var(--gray-700); font-weight: 600; }
+.action-item.danger .action-left span { color: var(--danger); }
 
 .action-icon {
-  width: 34px; height: 34px;
-  border-radius: 10px;
+  width: 36px; height: 36px;
+  border-radius: 11px;
   display: flex; align-items: center; justify-content: center;
 }
-.action-icon.edit { background: #eff6ff; color: #2563eb; }
-.action-icon.lock { background: #fef3c7; color: #d97706; }
-.action-icon.logout { background: #fef2f2; color: #dc2626; }
+.action-icon.edit { background: var(--primary-50); color: var(--primary); }
+.action-icon.lock { background: var(--accent-bg); color: var(--accent); }
+.action-icon.logout { background: var(--danger-bg); color: var(--danger); }
 
 /* 弹窗适配 */
 .mobile-dialog :deep(.el-dialog__body) { padding: 20px; }
 .mobile-dialog :deep(.el-form-item) { margin-bottom: 18px; }
-.mobile-dialog :deep(.el-dialog__header) { padding: 20px 20px 0; }
+.mobile-dialog :deep(.el-dialog__header) { padding: 22px 22px 0; }
 </style>

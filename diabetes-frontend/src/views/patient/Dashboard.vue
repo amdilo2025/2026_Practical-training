@@ -59,7 +59,7 @@
     <div class="section-card anim-fade-up" style="animation-delay:0.18s">
       <div class="section-header">
         <div class="section-title-wrap">
-          <el-icon :size="18" color="#2563eb"><DataAnalysis /></el-icon>
+          <el-icon :size="18" color="#22d3ee"><DataAnalysis /></el-icon>
           <span>资讯分类分布</span>
         </div>
       </div>
@@ -70,7 +70,7 @@
     <div class="section-card anim-fade-up" style="animation-delay:0.2s">
       <div class="section-header">
         <div class="section-title-wrap">
-          <el-icon :size="18" color="#2b6cb0"><Reading /></el-icon>
+          <el-icon :size="18" color="#22d3ee"><Reading /></el-icon>
           <span>健康资讯</span>
         </div>
         <el-button text size="small" @click="$router.push('/patient/article')">
@@ -95,7 +95,7 @@
     <div class="section-card anim-fade-up" style="animation-delay:0.3s">
       <div class="section-header">
         <div class="section-title-wrap">
-          <el-icon :size="18" color="#38a169"><ChatDotSquare /></el-icon>
+          <el-icon :size="18" color="#06b6d4"><ChatDotSquare /></el-icon>
           <span>最近咨询</span>
         </div>
         <el-button text size="small" @click="$router.push('/patient/doctor')">
@@ -114,7 +114,7 @@
         </div>
       </div>
       <div v-else class="empty-state">
-        <el-icon :size="36" color="#cbd5e0"><ChatDotSquare /></el-icon>
+        <el-icon :size="36" color="#94a3b8"><ChatDotSquare /></el-icon>
         <p>暂无咨询记录</p>
       </div>
     </div>
@@ -175,7 +175,7 @@ onMounted(async () => {
     if (catRes.code === 200) {
       pieChart = echarts.init(pieChartRef.value);
       const data = (catRes.data || []).map(d => ({ name: d.category, value: d.count }));
-      const colors = ["#2563eb","#059669","#d97706","#7c3aed","#dc2626"];
+      const colors = ["#22d3ee","#0ea5e9","#06b6d4","#0369a1","#f59e0b"];
       pieChart.setOption({
         tooltip: { trigger: 'item', formatter: '{b}: {c}篇 ({d}%)' },
         series: [{
@@ -204,29 +204,40 @@ onUnmounted(() => {
 /* 问候卡片 */
 .greeting-card {
   position: relative;
-  background: linear-gradient(135deg, #2b6cb0 0%, #2c5282 50%, #1a365d 100%);
-  border-radius: 16px;
+  background: var(--grad-primary);
+  border-radius: 20px;
   margin: 16px 0;
   overflow: hidden;
+  box-shadow: 0 14px 30px rgba(13, 148, 136, 0.26);
+}
+.greeting-card::after {
+  content: '';
+  position: absolute;
+  bottom: -44px;
+  left: -22px;
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(194, 113, 12, 0.34), transparent 70%);
 }
 .greeting-bg {
   position: absolute;
   top: -30px;
   right: -30px;
-  width: 140px;
-  height: 140px;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.06);
+  background: rgba(255, 255, 255, 0.1);
 }
 .greeting-bg::after {
   content: '';
   position: absolute;
-  top: 20px;
-  right: 20px;
-  width: 100px;
-  height: 100px;
+  top: 22px;
+  right: 22px;
+  width: 110px;
+  height: 110px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.04);
+  background: rgba(255, 255, 255, 0.06);
 }
 .greeting-content {
   position: relative;
@@ -234,60 +245,65 @@ onUnmounted(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
+  padding: 22px 20px;
 }
 .greeting-time {
   font-size: 13px;
-  color: rgba(255,255,255,0.7);
+  color: rgba(255, 255, 255, 0.75);
   margin-bottom: 4px;
+  letter-spacing: 0.05em;
 }
 .greeting-text h3 {
   font-size: 22px;
   color: #fff;
-  font-weight: 600;
+  font-weight: 700;
+  font-family: var(--font-display);
+  letter-spacing: 0.04em;
 }
-.greeting-suffix { font-weight: 400; opacity: 0.8; }
+.greeting-suffix { font-weight: 400; opacity: 0.82; }
 .greeting-status {
   font-size: 13px;
-  color: rgba(255,255,255,0.8);
-  margin-top: 6px;
+  color: rgba(255, 255, 255, 0.88);
+  margin-top: 8px;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
 }
 .status-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #a0aec0;
+  background: rgba(255, 255, 255, 0.6);
   display: inline-block;
 }
-.status-dot.normal { background: #48bb78; }
-.status-dot.high { background: #f56565; }
-.status-dot.low { background: #ecc94b; }
+.status-dot.normal { background: #6ee7b7; }
+.status-dot.high { background: #fca5a5; }
+.status-dot.low { background: #fcd34d; }
 .avatar-circle {
-  width: 52px;
-  height: 52px;
+  width: 54px;
+  height: 54px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.2);
+  background: rgba(255, 255, 255, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid rgba(255,255,255,0.3);
+  border: 2px solid rgba(255, 255, 255, 0.4);
 }
 .avatar-text {
   font-size: 22px;
   font-weight: 700;
   color: #fff;
+  font-family: var(--font-display);
 }
 
 /* 快捷操作 */
 .quick-section { margin-bottom: 16px; }
 .quick-title {
   font-size: 16px;
-  font-weight: 600;
-  color: #1a202c;
+  font-weight: 700;
+  color: var(--gray-800);
   margin-bottom: 12px;
+  letter-spacing: 0.03em;
 }
 .quick-grid {
   display: grid;
@@ -296,44 +312,45 @@ onUnmounted(() => {
 }
 .quick-item {
   background: #fff;
-  border-radius: 12px;
-  padding: 16px 8px;
+  border: 1px solid var(--gray-100);
+  border-radius: 16px;
+  padding: 16px 6px;
   text-align: center;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  box-shadow: var(--shadow-xs);
   cursor: pointer;
-  transition: transform 0.15s, box-shadow 0.15s;
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s;
 }
-.quick-item:active {
-  transform: scale(0.96);
-}
+.quick-item:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.quick-item:active { transform: scale(0.96); }
 .quick-item span {
   display: block;
   font-size: 12px;
-  color: #4a5568;
+  color: var(--gray-600);
   margin-top: 8px;
-  font-weight: 500;
+  font-weight: 600;
 }
 .quick-icon {
   width: 44px;
   height: 44px;
-  border-radius: 12px;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto;
 }
-.quick-icon.blue { background: #ebf4ff; color: #2b6cb0; }
-.quick-icon.orange { background: #fffaf0; color: #d69e2e; }
-.quick-icon.green { background: #f0fff4; color: #38a169; }
-.quick-icon.purple { background: #faf5ff; color: #805ad5; }
+.quick-icon.blue { background: var(--primary-50); color: var(--primary); }
+.quick-icon.orange { background: var(--accent-bg); color: var(--accent); }
+.quick-icon.green { background: var(--success-bg); color: var(--success); }
+.quick-icon.purple { background: #e7f6f1; color: var(--primary-700); }
 
 /* 通用卡片 */
 .section-card {
   background: #fff;
-  border-radius: 14px;
+  border: 1px solid var(--gray-100);
+  border-radius: 18px;
   padding: 18px 16px;
   margin-bottom: 12px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  box-shadow: var(--shadow-sm);
 }
 .section-header {
   display: flex;
@@ -346,12 +363,12 @@ onUnmounted(() => {
   align-items: center;
   gap: 8px;
   font-size: 16px;
-  font-weight: 600;
-  color: #1a202c;
+  font-weight: 700;
+  color: var(--gray-800);
 }
 .section-header :deep(.el-button) {
   font-size: 13px;
-  color: #718096;
+  color: var(--gray-500);
 }
 
 /* 资讯列表 */
@@ -359,22 +376,23 @@ onUnmounted(() => {
   display: flex;
   gap: 12px;
   padding: 12px 0;
-  border-bottom: 1px solid #f7fafc;
+  border-bottom: 1px dashed var(--gray-100);
   cursor: pointer;
 }
 .article-item:last-child { border-bottom: none; }
 .article-index {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
-  color: #e2e8f0;
+  color: var(--gray-300);
   min-width: 24px;
   line-height: 1.4;
+  font-family: var(--font-num);
 }
 .article-info { flex: 1; min-width: 0; }
 .article-title {
   font-size: 14px;
-  font-weight: 500;
-  color: #2d3748;
+  font-weight: 600;
+  color: var(--gray-800);
   margin-bottom: 6px;
   white-space: nowrap;
   overflow: hidden;
@@ -387,12 +405,12 @@ onUnmounted(() => {
 }
 .article-views {
   font-size: 11px;
-  color: #a0aec0;
+  color: var(--gray-400);
 }
 
 /* 咨询列表 */
 .consult-list { }
-.consult-item { padding: 12px 0; border-bottom: 1px solid #f7fafc; }
+.consult-item { padding: 12px 0; border-bottom: 1px dashed var(--gray-100); }
 .consult-item:last-child { border-bottom: none; }
 .consult-header {
   display: flex;
@@ -402,12 +420,12 @@ onUnmounted(() => {
 }
 .consult-doctor {
   font-size: 14px;
-  font-weight: 600;
-  color: #2b6cb0;
+  font-weight: 700;
+  color: var(--primary-700);
 }
 .consult-content {
   font-size: 13px;
-  color: #718096;
+  color: var(--gray-500);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -417,7 +435,7 @@ onUnmounted(() => {
 .empty-state {
   text-align: center;
   padding: 24px 0;
-  color: #a0aec0;
+  color: var(--gray-400);
 }
 .empty-state p { margin-top: 8px; font-size: 13px; }
 </style>
