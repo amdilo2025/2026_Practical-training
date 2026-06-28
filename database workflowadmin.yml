@@ -1,0 +1,223 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  icon_type: emoji
+  mode: workflow
+  name: database workflowadmin
+  use_icon_as_answer_icon: false
+dependencies: []
+kind: app
+version: 0.6.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        attachment_image_file_size_limit: 2
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        file_upload_limit: 20
+        image_file_batch_limit: 10
+        image_file_size_limit: 10
+        single_chunk_attachment_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInLoop: false
+        sourceType: start
+        targetType: http-request
+      id: 1782631115238-source-1782631243429-target
+      source: '1782631115238'
+      sourceHandle: source
+      target: '1782631243429'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: http-request
+        targetType: code
+      id: 1782631243429-source-1782631310299-target
+      selected: false
+      source: '1782631243429'
+      sourceHandle: source
+      target: '1782631310299'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: code
+        targetType: end
+      id: 1782631310299-source-1782631394031-target
+      source: '1782631310299'
+      sourceHandle: source
+      target: '1782631394031'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        selected: false
+        title: 开始
+        type: start
+        variables:
+        - default: ''
+          hint: ''
+          label: SQL语句
+          options: []
+          placeholder: ''
+          required: true
+          type: paragraph
+          variable: sql
+      height: 108
+      id: '1782631115238'
+      position:
+        x: 80
+        y: 282
+      positionAbsolute:
+        x: 80
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data:
+          - id: key-value-492
+            key: ''
+            type: text
+            value: '{"sql":"{{#1782631115238.sql#}}"}'
+          type: json
+        headers: Content-Type:application/json
+        method: post
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: HTTP 请求
+        type: http-request
+        url: http://172.22.2.105:8090/diabetes/api/admin/execute
+        variables: []
+      height: 137
+      id: '1782631243429'
+      position:
+        x: 254.67708587646484
+        y: 483.0104179382324
+      positionAbsolute:
+        x: 254.67708587646484
+        y: 483.0104179382324
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "function main({body}) {\n      let obj = JSON.parse(body)\n      return\
+          \ {\n        result: obj.result\n    }\n}\n"
+        code_language: javascript
+        outputs:
+          result:
+            children: null
+            type: array[object]
+        selected: false
+        title: 解析结果
+        type: code
+        variables:
+        - value_selector:
+          - '1782631243429'
+          - body
+          value_type: string
+          variable: body
+      height: 51
+      id: '1782631310299'
+      position:
+        x: 417.67708587646484
+        y: 214.01041793823242
+      positionAbsolute:
+        x: 417.67708587646484
+        y: 214.01041793823242
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        outputs:
+        - value_selector:
+          - '1782631310299'
+          - result
+          value_type: array[object]
+          variable: result
+        selected: false
+        title: 输出
+        type: end
+      height: 88
+      id: '1782631394031'
+      position:
+        x: 615.6770858764648
+        y: 510.0104179382324
+      positionAbsolute:
+        x: 615.6770858764648
+        y: 510.0104179382324
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    viewport:
+      x: -456.67708587646484
+      y: -30.510417938232422
+      zoom: 1
+  rag_pipeline_variables: []
