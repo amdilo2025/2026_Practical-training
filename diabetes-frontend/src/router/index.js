@@ -117,6 +117,12 @@ const routes = [
         component: () => import("../views/admin/Statistics.vue"),
         meta: { title: "数据统计", icon: "DataAnalysis" },
       },
+      {
+        path: "ai-query",
+        name: "AdminAIQuery",
+        component: () => import("../views/admin/AdminAIQuery.vue"),
+        meta: { title: "AI智能查询", icon: "MagicStick" },
+      },
     ],
   },
   { path: "/:pathMatch(.*)*", redirect: "/login" },

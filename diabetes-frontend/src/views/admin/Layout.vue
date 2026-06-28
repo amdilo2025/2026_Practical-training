@@ -57,6 +57,10 @@
           <el-icon><DataAnalysis /></el-icon>
           <span>数据统计</span>
         </el-menu-item>
+        <el-menu-item index="/admin/ai-query">
+          <el-icon><MagicStick /></el-icon>
+          <span>AI智能查询</span>
+        </el-menu-item>
       </el-menu>
     </el-drawer>
 

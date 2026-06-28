@@ -23,6 +23,9 @@ public class DifyClient {
     @Value("${dify.doctor-api-key:}")
     private String doctorApiKey;
 
+    @Value("${dify.admin-api-key:}")
+    private String adminApiKey;
+
     private final RestTemplate restTemplate;
 
     public DifyClient() {
@@ -117,6 +120,15 @@ public class DifyClient {
 
     public String getDoctorApiKey() {
         return doctorApiKey;
+    }
+
+    /**
+     * 管理员智能查询（调用 数据管理工作流）
+     */
+    public Map<String, Object> runAdminWorkflow(String question, String userId) {
+        Map<String, Object> inputs = new HashMap<>();
+        inputs.put("intention", question);
+        return runWorkflow(inputs, userId, adminApiKey);
     }
 
     /**
