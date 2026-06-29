@@ -1,0 +1,381 @@
+app:
+  description: 根据用户身体指标（年龄/BMI/腰围/血压/血糖/家族史等）评估糖尿病风险等级、评分与建议
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  icon_type: emoji
+  mode: workflow
+  name: 信息管理与风险预测
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/deepseek:0.0.17@f7a5c1d222d17ee419b17a80d6e4923838fe93788dc724a3af73fbc6990b3a32
+    version: null
+kind: app
+version: 0.6.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        attachment_image_file_size_limit: 2
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        file_upload_limit: 20
+        image_file_batch_limit: 10
+        image_file_size_limit: 10
+        single_chunk_attachment_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: code
+      id: start-source-code-target
+      source: '1744874225565'
+      sourceHandle: source
+      target: '1744875729144'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: code
+        targetType: llm
+      id: code-source-llm-target
+      source: '1744875729144'
+      sourceHandle: source
+      target: '1744876442544'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: llm
+        targetType: end
+      id: llm-source-end-target
+      source: '1744876442544'
+      sourceHandle: source
+      target: '1744880760015'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: 开始
+        type: start
+        variables:
+        - label: 用户ID
+          max_length: 48
+          options: []
+          required: true
+          type: number
+          variable: userId
+        - label: 年龄
+          max_length: 48
+          options: []
+          required: true
+          type: number
+          variable: age
+        - label: 性别
+          max_length: 48
+          options: []
+          required: true
+          type: text-input
+          variable: sex
+        - label: 身高
+          max_length: 48
+          options: []
+          required: true
+          type: number
+          variable: height
+        - label: 体重
+          max_length: 48
+          options: []
+          required: true
+          type: number
+          variable: weight
+        - label: 家族病史
+          max_length: 255
+          options: []
+          required: true
+          type: text-input
+          variable: familyHistory
+        - label: 是否患病
+          max_length: 48
+          options: []
+          required: true
+          type: text-input
+          variable: disease
+        - label: 空腹血糖
+          max_length: 48
+          options: []
+          required: true
+          type: number
+          variable: fastingBloodSugar
+        - label: 餐后血糖
+          max_length: 48
+          options: []
+          required: true
+          type: number
+          variable: postprandialBloodSugar
+        - label: 收缩压
+          max_length: 48
+          options: []
+          required: false
+          type: number
+          variable: systolicPressure
+        - label: 舒张压
+          max_length: 48
+          options: []
+          required: false
+          type: number
+          variable: diastolicPressure
+      height: 367
+      id: '1744874225565'
+      position:
+        x: 0
+        y: 0
+      positionAbsolute:
+        x: 0
+        y: 0
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "function main(param) {\n  const sex = param.sex;\n  const height =\
+          \ param.height;\n  const weight = param.weight;\n  const age = param.age;\n\
+          \  const systolicPressure = param.systolicPressure;\n  const bmi = weight\
+          \ / ((height / 100) * (height / 100));\n  let waistline;\n  if (sex ===\
+          \ '男') {\n    waistline = height * 0.3 + weight * 0.1 - age * 0.1 + 8;\n\
+          \  } else {\n    waistline = height * 0.3 + weight * 0.1 - age * 0.1 + 5;\n\
+          \  }\n  let sp = systolicPressure;\n  if (sp == null || sp === 0) {\n  \
+          \  if (sex === '男') {\n      sp = bmi < 24 ? 115 : (bmi < 28 ? 125 : 135);\n\
+          \    } else {\n      sp = bmi < 24 ? 110 : (bmi < 28 ? 120 : 130);\n   \
+          \ }\n  }\n  return {\n    bmi: Number(bmi.toFixed(1)),\n    waistline: Number(waistline.toFixed(1)),\n\
+          \    systolicPressure: Number(sp.toFixed(1))\n  };\n}\n"
+        code_language: javascript
+        desc: 计算BMI并估算腰围、收缩压
+        outputs:
+          bmi:
+            children: null
+            type: number
+          systolicPressure:
+            children: null
+            type: number
+          waistline:
+            children: null
+            type: number
+        selected: false
+        title: 计算BMI与腰围
+        type: code
+        variables:
+        - value_selector:
+          - '1744874225565'
+          - sex
+          variable: sex
+        - value_selector:
+          - '1744874225565'
+          - height
+          variable: height
+        - value_selector:
+          - '1744874225565'
+          - weight
+          variable: weight
+        - value_selector:
+          - '1744874225565'
+          - age
+          variable: age
+        - value_selector:
+          - '1744874225565'
+          - systolicPressure
+          variable: systolicPressure
+      height: 78
+      id: '1744875729144'
+      position:
+        x: 342
+        y: 200
+      positionAbsolute:
+        x: 342
+        y: 200
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: 根据评分表评估风险等级
+        model:
+          completion_params:
+            temperature: 0.3
+          mode: chat
+          name: deepseek-v4-pro
+          provider: langgenius/deepseek/deepseek
+        prompt_template:
+        - edition_type: basic
+          id: 5102eccd-3600-47c1-990d-93670ff84ad8
+          role: system
+          text: '你是资深糖尿病专家，根据用户的身体指标评估其糖尿病患病风险。
+
+
+            请依据以下评分表计算风险总分：
+
+            - 年龄：<30岁 0分；30-39岁 8分；40-49岁 12分；50-59岁 15分；60岁及以上 18分
+
+            - BMI：<22.0 0分；22.0-23.9 1分；24.0-29.9 3分；30.0及以上 5分
+
+            - 腰围：男性<85或女性<80 0分；男性85-89或女性80-84 5分；男性90-94或女性85-89 8分；男性95及以上或女性90及以上
+            10分
+
+            - 收缩压：<120 0分；120-129 3分；130-139 6分；140-159 7分；160及以上 10分
+
+            - 舒张压：<80 0分；80-89 2分；90-99 4分；100及以上 6分（参考，与收缩压综合评估血压风险）
+
+            - 空腹血糖：<6.1 0分；6.1-6.9 8分；7.0及以上 15分
+
+            - 餐后2小时血糖：<7.8 0分；7.8-11.0 8分；11.1及以上 15分
+
+            - 糖尿病家族史：无 0分；有 10分
+
+            - 性别：女 0分；男 2分
+
+
+            风险等级判定：低风险（总分<40）；中风险（总分40-69）；高风险（总分70及以上）。
+
+            若用户已患糖尿病（是否患病=是），风险等级不低于中风险，并侧重于治疗与控糖建议。
+
+
+            请严格按以下单行格式输出，不要输出评分表、思考过程或任何其它内容：
+
+            【风险等级】|评分:数字|建议:建议内容
+
+            其中【风险等级】只能是【低风险】【中风险】【高风险】之一；数字为0-100的整数；建议内容控制在80字以内。
+
+            '
+        - id: acc0cca5-088e-4d69-a368-51032346fbb8
+          role: user
+          text: '年龄:{{#1744874225565.age#}}
+
+            性别:{{#1744874225565.sex#}}
+
+            身高:{{#1744874225565.height#}}cm
+
+            体重:{{#1744874225565.weight#}}kg
+
+            BMI:{{#1744875729144.bmi#}}
+
+            腰围:{{#1744875729144.waistline#}}cm
+
+            收缩压:{{#1744875729144.systolicPressure#}}mmHg
+
+            舒张压:{{#1744874225565.diastolicPressure#}}mmHg
+
+            空腹血糖:{{#1744874225565.fastingBloodSugar#}}mmol/L
+
+            餐后2小时血糖:{{#1744874225565.postprandialBloodSugar#}}mmol/L
+
+            糖尿病家族史:{{#1744874225565.familyHistory#}}
+
+            是否患病:{{#1744874225565.disease#}}
+
+            '
+        selected: false
+        title: LLM风险评估
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 114
+      id: '1744876442544'
+      position:
+        x: 700
+        y: 190
+      positionAbsolute:
+        x: 700
+        y: 190
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    - data:
+        desc: ''
+        outputs:
+        - value_selector:
+          - '1744876442544'
+          - text
+          variable: result
+        - value_selector:
+          - '1744874225565'
+          - disease
+          variable: disease
+        selected: false
+        title: 结束
+        type: end
+      height: 113
+      id: '1744880760015'
+      position:
+        x: 1060
+        y: 200
+      positionAbsolute:
+        x: 1060
+        y: 200
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 241
+    viewport:
+      x: -524.9
+      y: 141.3
+      zoom: 0.8
+  rag_pipeline_variables: []

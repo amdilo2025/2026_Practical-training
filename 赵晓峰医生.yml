@@ -1,0 +1,208 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  icon_type: emoji
+  mode: chat
+  name: 赵晓峰医生
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/deepseek:0.0.17@f7a5c1d222d17ee419b17a80d6e4923838fe93788dc724a3af73fbc6990b3a32
+    version: null
+kind: app
+model_config:
+  agent_mode:
+    enabled: false
+    max_iteration: 10
+    strategy: function_call
+    tools: []
+  annotation_reply:
+    enabled: false
+  chat_prompt_config:
+    prompt:
+    - role: system
+      text: ''
+  completion_prompt_config:
+    conversation_histories_role:
+      assistant_prefix: ''
+      user_prefix: ''
+    prompt:
+      text: ''
+  dataset_configs:
+    datasets:
+      datasets: []
+    retrieval_model: multiple
+    top_k: 4
+  dataset_query_variable: ''
+  external_data_tools: []
+  file_upload:
+    allowed_file_extensions:
+    - .JPG
+    - .JPEG
+    - .PNG
+    - .GIF
+    - .WEBP
+    - .SVG
+    - .MP4
+    - .MOV
+    - .MPEG
+    - .MPGA
+    allowed_file_types: []
+    allowed_file_upload_methods:
+    - remote_url
+    - local_file
+    enabled: false
+    image:
+      detail: high
+      enabled: false
+      number_limits: 3
+      transfer_methods:
+      - remote_url
+      - local_file
+    number_limits: 3
+  model:
+    completion_params:
+      stop: []
+    mode: chat
+    name: deepseek-v4-pro
+    provider: langgenius/deepseek/deepseek
+  more_like_this:
+    enabled: false
+  opening_statement: ''
+  pre_prompt: '# 角色
+
+    你是内科主任赵晓峰，在糖尿病的预防与治疗领域有着深厚的专业造诣和丰富的临床经验，能够为患者提供专业、精准且贴心的医疗建议和指导。
+
+
+    用户信息包括:
+
+
+    用户ID:{{userId}}
+
+
+    性别：{{sex}}
+
+
+    年龄：{{age}}
+
+
+    身高：{{height}}
+
+
+    体重：{{weight}}
+
+
+    家族病史：{{familyHistory}}
+
+
+    是否患病：{{disease}}
+
+
+
+    ## 技能
+
+
+    ### 技能 1: 糖尿病预防咨询
+
+
+    1. 当用户咨询糖尿病预防相关问题时，详细询问用户的生活习惯，如饮食结构、运动频率、作息规律等，以及家族病史、身体基础状况等信息。
+
+
+    2. 根据用户提供的信息，结合专业知识，为用户制定个性化的糖尿病预防方案，包括饮食调整建议、运动计划、生活方式改善等方面。
+
+
+    3. 以通俗易懂的语言向用户解释预防措施的原理和重要性，确保用户理解并能够执行。
+
+
+
+    ### 技能 2: 糖尿病治疗建议
+
+
+    1. 当用户咨询糖尿病治疗问题时，了解患者目前的病情状况，如血糖水平、患病时长、是否有并发症、正在使用的治疗方法等详细信息。
+
+
+    2. 依据专业医疗知识和临床经验，为患者提供针对性的治疗建议，包括药物治疗、饮食控制、运动疗法、血糖监测等方面的具体指导。
+
+
+    3. 告知患者治疗过程中的注意事项，以及可能出现的问题和应对方法，帮助患者更好地管理病情。
+
+
+
+    ## 限制:
+
+
+    - 只提供与糖尿病预防和治疗相关的医疗建议和指导，拒绝回答与该领域无关的话题。
+
+
+    - 所输出的内容必须条理清晰、逻辑连贯，以患者易于理解的方式呈现。
+
+
+    - 输出时不要输出用户的用户信息，输出内容尽量简洁。
+
+
+    - 医疗建议和指导应基于医学专业知识和临床实践经验，确保科学性和可靠性。
+
+
+    - 信息来源主要依靠医学权威文献、临床研究成果以及自身丰富的临床经验。
+
+    '
+  prompt_type: simple
+  retriever_resource:
+    enabled: true
+  sensitive_word_avoidance:
+    configs: []
+    enabled: false
+    type: ''
+  speech_to_text:
+    enabled: false
+  suggested_questions: []
+  suggested_questions_after_answer:
+    enabled: false
+  text_to_speech:
+    enabled: false
+    language: ''
+    voice: ''
+  user_input_form:
+  - text-input:
+      default: ''
+      label: userId
+      max_length: 48
+      required: true
+      variable: userId
+  - text-input:
+      default: ''
+      label: sex
+      max_length: 48
+      required: true
+      variable: sex
+  - number:
+      default: ''
+      label: age
+      required: true
+      variable: age
+  - number:
+      default: ''
+      label: height
+      required: true
+      variable: height
+  - number:
+      default: ''
+      label: weight
+      required: true
+      variable: weight
+  - text-input:
+      default: ''
+      label: familyHistory
+      max_length: 48
+      required: true
+      variable: familyHistory
+  - text-input:
+      default: ''
+      label: disease
+      max_length: 48
+      required: true
+      variable: disease
+version: 0.6.0
