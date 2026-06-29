@@ -17,7 +17,7 @@
     <div class="chat-messages" ref="msgRef">
       <div v-if="messages.length === 0" class="welcome-area anim-fade-in">
         <div class="welcome-icon">
-          <el-icon :size="48" color="#0d9488"><MagicStick /></el-icon>
+          <el-icon :size="48" color="#5b9bd5"><MagicStick /></el-icon>
         </div>
         <h4>您好！我是您的健康助手</h4>
         <p class="welcome-desc">关于糖尿病、饮食、运动等问题都可以问我</p>
@@ -32,7 +32,8 @@
         <div class="msg-avatar" v-if="msg.role === 'ai'">
           <el-icon :size="18" color="#fff"><MagicStick /></el-icon>
         </div>
-        <div class="msg-bubble">{{ msg.content }}</div>
+        <div class="msg-bubble" v-if="msg.role === 'ai'" v-html="formatContent(msg.content)"></div>
+        <div class="msg-bubble" v-else>{{ msg.content }}</div>
         <div class="msg-avatar user-avatar" v-if="msg.role === 'user'">
           <span>{{ userInitial }}</span>
         </div>
@@ -57,7 +58,7 @@
       >
         <template #append>
           <el-button
-            @click="sendMessage"
+            @click="sendMessage()"
             :disabled="loading || !inputMsg.trim()"
             class="send-btn"
             :icon="Promotion"
@@ -89,6 +90,15 @@ const quickQuestions = [
   "可以吃水果吗？",
   "怎么预防并发症？",
 ];
+
+// 将AI回复中的 \n\n 转为段落，\n 转为 <br>，实现段落分明
+const formatContent = (text) => {
+  if (!text) return "";
+  return text
+    .split(/\n\n+/)
+    .map(p => `<p>${p.replace(/\n/g, "<br>")}</p>`)
+    .join("");
+};
 
 const sendMessage = async (text) => {
   const msg = text || inputMsg.value;
@@ -245,6 +255,13 @@ const scrollToBottom = async () => {
   box-shadow: var(--shadow-xs);
   border-bottom-left-radius: 5px;
 }
+.msg-item.ai .msg-bubble :deep(p) {
+  text-indent: 2em;
+  margin: 0 0 0.6em 0;
+}
+.msg-item.ai .msg-bubble :deep(p:last-child) {
+  margin-bottom: 0;
+}
 .msg-item.user .msg-bubble {
   background: var(--grad-primary);
   color: #fff;
@@ -277,7 +294,7 @@ const scrollToBottom = async () => {
 .chat-input :deep(.el-input__wrapper) {
   border-radius: 24px !important;
   padding-left: 16px !important;
-  background: var(--cream) !important;
+  background: #f0f7ff !important;
   box-shadow: 0 0 0 1px var(--gray-200) inset !important;
 }
 .chat-input :deep(.el-input__wrapper.is-focus) {

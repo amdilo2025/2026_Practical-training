@@ -23,8 +23,8 @@ public class DifyClient {
     @Value("${dify.doctor-api-key:}")
     private String doctorApiKey;
 
-    @Value("${dify.admin-api-key:}")
-    private String adminApiKey;
+    @Value("${dify.data-query-api-key:}")
+    private String dataQueryApiKey;
 
     private final RestTemplate restTemplate;
 
@@ -123,12 +123,14 @@ public class DifyClient {
     }
 
     /**
-     * 管理员智能查询（调用 数据管理工作流）
+     * 自然语言数据查询：调用 Dify 数据管理工作流
+     * 工作流内部完成 Text2SQL → 执行 SQL → 返回结果
      */
-    public Map<String, Object> runAdminWorkflow(String question, String userId) {
+    @SuppressWarnings("unchecked")
+    public Map<String, Object> runDataQueryWorkflow(String query, String userId) {
         Map<String, Object> inputs = new HashMap<>();
-        inputs.put("intention", question);
-        return runWorkflow(inputs, userId, adminApiKey);
+        inputs.put("intention", query);
+        return runWorkflow(inputs, userId, dataQueryApiKey);
     }
 
     /**

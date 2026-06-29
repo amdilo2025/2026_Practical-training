@@ -56,7 +56,7 @@
         咨询历史
       </div>
       <div v-if="history.length > 0" class="history-list">
-        <div v-for="item in history" :key="item.id" class="history-item" @click="showDetail(item)">
+        <div v-for="item in history" :key="item.id" class="history-item">
           <div class="h-item-header">
             <div class="h-doctor">
               <div class="h-avatar" :style="{ background: docColors(item.doctor_id) }">
@@ -75,7 +75,7 @@
           <div class="h-content">{{ item.content }}</div>
           <div v-if="item.reply" class="h-reply">
             <span class="reply-label">医师回复：</span>
-            {{ item.reply }}
+            <div class="reply-body" v-html="formatContent(item.reply)"></div>
           </div>
         </div>
       </div>
@@ -105,6 +105,34 @@ const docColors = (id) => {
   return colors[(id || 1) % colors.length];
 };
 const formatTime = (t) => t ? t.slice(0, 16).replace("T", " ") : "";
+
+// 将markdown回复转为段落分明格式，处理标题、加粗、列表、纯文本换行等
+const formatContent = (text) => {
+  if (!text) return "";
+  let html = text;
+  // 先处理标题
+  html = html.replace(/^### (.+)$/gm, "<h4>$1</h4>");
+  html = html.replace(/^## (.+)$/gm, "<h3>$1</h3>");
+  html = html.replace(/^# (.+)$/gm, "<h2>$1</h2>");
+  // 无序列表项 → 用 · 开头代替圆点
+  html = html.replace(/^[*-]\s+(.+)$/gm, '<p>· $1</p>');
+  // 有序列表转中文序号
+  html = html.replace(/^\d+[.)]\s+(.+)$/gm, '<p>$1</p>');
+  // 加粗
+  html = html.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+  // 连续空行分隔 → 段落
+  html = html
+    .split(/\n\n+/)
+    .map(p => {
+      p = p.trim();
+      if (!p) return "";
+      if (p.startsWith("<h") || p.startsWith("<p>")) return p;
+      return `<p>${p.replace(/\n/g, "<br>")}</p>`;
+    })
+    .filter(Boolean)
+    .join("");
+  return html;
+};
 
 const loadData = async () => {
   const dRes = await doctorApi.list();
@@ -233,7 +261,6 @@ onMounted(loadData);
 .history-item {
   padding: 14px 0;
   border-bottom: 1px dashed var(--gray-100);
-  cursor: pointer;
 }
 .history-item:last-child { border-bottom: none; }
 .h-item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
@@ -266,4 +293,17 @@ onMounted(loadData);
   line-height: 1.55;
 }
 .reply-label { font-weight: 700; }
+.reply-body :deep(p) {
+  text-indent: 2em;
+  margin: 0 0 0.6em 0;
+}
+.reply-body :deep(p:last-child) { margin-bottom: 0; }
+.reply-body :deep(h2), .reply-body :deep(h3), .reply-body :deep(h4) {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gray-800);
+  margin: 10px 0 6px;
+  font-family: var(--font-display);
+}
+.reply-body :deep(strong) { color: var(--gray-800); }
 </style>

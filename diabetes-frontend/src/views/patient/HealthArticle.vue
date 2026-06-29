@@ -71,7 +71,7 @@ const filteredList = computed(() => {
 });
 
 const getGradient = (cat) => {
-  const map = { "饮食": "#2f8a5f,#0d9488", "运动": "#0d9488,#0c6259", "用药": "#e8920f,#c2710c", "科普": "#0c6259,#115e59", "并发症": "#c0392b,#9a2b22" };
+  const map = { "饮食": "#5b9bd5,#7cc3f2", "运动": "#4ba9e6,#2d6fa0", "用药": "#e8920f,#c2710c", "科普": "#7cc3f2,#5b9bd5", "并发症": "#e8807f,#c2710c" };
   return map[cat] || "#8a7c64,#635543";
 };
 

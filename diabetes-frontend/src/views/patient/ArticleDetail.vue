@@ -7,7 +7,7 @@
     </div>
 
     <div v-if="article" class="detail-content anim-fade-up">
-      <div class="detail-cover" :style="{ background: `linear-gradient(135deg, #0f766e, #0c6259)` }">
+      <div class="detail-cover" :style="{ background: `linear-gradient(135deg, #5b9bd5, #7cc3f2)` }">
         <span class="detail-category-tag">{{ article.category }}</span>
       </div>
       <div class="detail-body-wrap">

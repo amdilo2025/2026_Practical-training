@@ -117,7 +117,7 @@ export const planApi = {
 export const adminApi = {
   dashboard: () => api.get("/admin/dashboard"),
   statistics: () => api.get("/admin/statistics"),
-  aiQuery: (question) => api.post("/admin/ai/query", { question }, { timeout: 60000 }),
+  dataQuery: (data) => api.post("/admin/data-query", data, { timeout: 60000 }),
 };
 
 // ==================== 仪表盘 ====================

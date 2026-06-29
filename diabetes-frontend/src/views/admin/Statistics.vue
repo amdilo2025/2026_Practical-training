@@ -46,7 +46,7 @@ onMounted(async () => {
       tooltip: { trigger: "axis" },
       xAxis: { type: "category", data: trend.map(t => t.date) },
       yAxis: { type: "value" },
-      series: [{ type: "line", data: trend.map(t => t.count), smooth: true, lineStyle: { color: "#0d9488", width: 3 }, itemStyle: { color: "#0d9488" }, areaStyle: { color: { type: "linear", x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: "rgba(13,148,136,0.35)" }, { offset: 1, color: "rgba(13,148,136,0.02)" }] } } }],
+      series: [{ type: "line", data: trend.map(t => t.count), smooth: true, lineStyle: { color: "#5b9bd5", width: 3 }, itemStyle: { color: "#5b9bd5" }, areaStyle: { color: { type: "linear", x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: "rgba(91,155,213,0.3)" }, { offset: 1, color: "rgba(91,155,213,0.02)" }] } } }],
       grid: { left: "8%", right: "8%", bottom: "15%" },
     });
   }
@@ -56,7 +56,7 @@ onUnmounted(() => { trendChart?.dispose(); });
 </script>
 
 <style scoped>
-.statistics { max-width: 600px; margin: 0 auto; }
+.statistics { width: 100%; }
 .page-title { font-size: 22px; margin-bottom: 18px; font-family: var(--font-display); color: var(--gray-900); letter-spacing: 0.04em; }
 .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
 .stat-card { background: #fff; border: 1px solid var(--gray-100); border-radius: 16px; padding: 20px 12px; text-align: center; box-shadow: var(--shadow-sm); position: relative; overflow: hidden; }

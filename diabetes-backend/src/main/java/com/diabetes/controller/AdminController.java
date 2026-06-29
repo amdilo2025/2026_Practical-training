@@ -1,6 +1,7 @@
 package com.diabetes.controller;
 
 import com.diabetes.common.R;
+import com.diabetes.mapper.HealthArticleMapper;
 import com.diabetes.service.*;
 import com.diabetes.utils.DifyClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +22,16 @@ public class AdminController {
     private ConsultationService consultationService;
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private DailyCheckinService dailyCheckinService;
 
     @Autowired
     private DifyClient difyClient;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private HealthArticleMapper healthArticleMapper;
 
     @GetMapping("/dashboard")
     public R<Map<String, Object>> dashboard() {
@@ -32,6 +39,7 @@ public class AdminController {
         data.put("totalUsers", userService.countActiveUsers());
         data.put("pendingConsultations", consultationService.countByStatus("待回复"));
         data.put("totalConsultations", consultationService.countByStatus("已回复") + consultationService.countByStatus("待回复"));
+        data.put("totalArticles", healthArticleMapper.selectCount(null));
 
         String startDate = LocalDate.now().minusDays(7).toString();
         data.put("activeDays7", 0);
@@ -56,54 +64,60 @@ public class AdminController {
         return R.success(data);
     }
 
+    /**
+     * 执行 SQL 查询（仅允许 SELECT）
+     * 供 Dify 的 database workflowadmin 子工作流调用
+     */
     @PostMapping("/execute")
-    public Map<String, Object> execute(@RequestBody Map<String, String> body) {
+    public R<Map<String, Object>> executeSql(@RequestBody Map<String, String> body) {
         String sql = body.get("sql");
-        Map<String, Object> result = new HashMap<>();
-
-        if (sql == null || sql.isBlank()) {
-            result.put("result", List.of(Map.of("error", "SQL语句不能为空")));
-            return result;
+        if (sql == null || sql.trim().isEmpty()) {
+            return R.error("SQL语句不能为空");
         }
 
-        // 清理 markdown 代码块标记和空白
-        String cleanSql = sql.trim();
-        if (cleanSql.startsWith("```sql")) {
-            cleanSql = cleanSql.substring(6);
-        } else if (cleanSql.startsWith("```")) {
-            cleanSql = cleanSql.substring(3);
+        String trimmed = sql.trim();
+        String upper = trimmed.substring(0, Math.min(20, trimmed.length())).toUpperCase();
+
+        if (!upper.startsWith("SELECT") && !upper.startsWith("SHOW") && !upper.startsWith("DESC")) {
+            return R.error("仅允许执行 SELECT/SHOW/DESC 查询语句");
         }
-        if (cleanSql.endsWith("```")) {
-            cleanSql = cleanSql.substring(0, cleanSql.length() - 3);
-        }
-        cleanSql = cleanSql.trim();
-        String trimmedSql = cleanSql.toUpperCase();
-        if (!trimmedSql.startsWith("SELECT") && !trimmedSql.startsWith("SHOW") && !trimmedSql.startsWith("DESCRIBE")) {
-            result.put("result", List.of(Map.of("error", "仅允许执行SELECT查询语句")));
-            return result;
+
+        if (upper.contains("DROP") || upper.contains("DELETE") || upper.contains("UPDATE")
+                || upper.contains("INSERT") || upper.contains("ALTER") || upper.contains("TRUNCATE")) {
+            return R.error("禁止执行修改类SQL语句");
         }
 
         try {
-            List<Map<String, Object>> rows = jdbcTemplate.queryForList(cleanSql);
-            result.put("result", rows);
+            List<Map<String, Object>> rows = jdbcTemplate.queryForList(trimmed);
+            List<String> columns = rows.isEmpty() ? new ArrayList<>() : new ArrayList<>(rows.get(0).keySet());
+            Map<String, Object> result = new HashMap<>();
+            result.put("columns", columns);
+            result.put("rows", rows);
+            result.put("total", rows.size());
+            return R.success(result);
         } catch (Exception e) {
-            result.put("result", List.of(Map.of("error", "SQL执行失败: " + e.getMessage())));
+            return R.error("SQL执行失败: " + e.getMessage());
         }
-        return result;
     }
 
-    @PostMapping("/ai/query")
-    public R<?> aiQuery(@RequestBody Map<String, String> body) {
-        String question = body.get("question");
-        if (question == null || question.isBlank()) {
+    /**
+     * 自然语言数据查询
+     * 接收用户输入的自然语言，转发给 Dify 数据管理工作流执行 Text2SQL 并返回结果
+     */
+    @PostMapping("/data-query")
+    public R<Map<String, Object>> dataQuery(@RequestBody Map<String, String> body) {
+        String query = body.get("query");
+        if (query == null || query.trim().isEmpty()) {
             return R.error("查询内容不能为空");
         }
+
+        String userId = body.getOrDefault("userId", "admin");
+
         try {
-            Map<String, Object> outputs = difyClient.runAdminWorkflow(question, "admin-user");
-            Object bodyObj = outputs.get("body");
-            return R.success(bodyObj);
+            Map<String, Object> result = difyClient.runDataQueryWorkflow(query, userId);
+            return R.success(result);
         } catch (Exception e) {
-            return R.error("智能查询失败: " + e.getMessage());
+            return R.error("数据查询失败: " + e.getMessage());
         }
     }
 }

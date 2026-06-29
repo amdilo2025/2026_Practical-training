@@ -2,6 +2,7 @@
   <div class="user-manage">
     <h3 class="page-title">用户管理</h3>
     <el-card shadow="never">
+      <div class="table-wrap">
       <el-table :data="users" stripe style="width: 100%">
         <el-table-column prop="id" label="ID" width="50" />
         <el-table-column prop="name" label="姓名" width="80" />
@@ -22,6 +23,7 @@
           </template>
         </el-table-column>
       </el-table>
+      </div>
     </el-card>
   </div>
 </template>
@@ -50,6 +52,7 @@ onMounted(loadData);
 </script>
 
 <style scoped>
-.user-manage { max-width: 600px; margin: 0 auto; }
+.user-manage { width: 100%; }
+.table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--gray-100); }
 .page-title { font-size: 22px; margin-bottom: 18px; font-family: var(--font-display); color: var(--gray-900); letter-spacing: 0.04em; }
 </style>

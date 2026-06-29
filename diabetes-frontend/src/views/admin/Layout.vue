@@ -29,7 +29,7 @@
     <!-- 抽屉菜单 -->
     <el-drawer v-model="drawerVisible" title="导航菜单" direction="ltr" size="260px" :with-header="false" class="admin-drawer">
       <div class="drawer-logo">
-        <el-icon :size="24" color="#22d3ee"><MedicalKit /></el-icon>
+        <el-icon :size="24" color="#5b9bd5"><FirstAidKit /></el-icon>
         <span>血糖管理助手</span>
       </div>
       <el-menu :default-active="activeMenu" :router="true" @select="drawerVisible = false">
@@ -57,9 +57,9 @@
           <el-icon><DataAnalysis /></el-icon>
           <span>数据统计</span>
         </el-menu-item>
-        <el-menu-item index="/admin/ai-query">
-          <el-icon><MagicStick /></el-icon>
-          <span>AI智能查询</span>
+        <el-menu-item index="/admin/data-query">
+          <el-icon><Search /></el-icon>
+          <span>数据查询</span>
         </el-menu-item>
       </el-menu>
     </el-drawer>
@@ -100,43 +100,46 @@ const handleCommand = async (cmd) => {
 
 <style scoped>
 .admin-layout {
-  min-height: 100vh;
+  height: 100vh;
   background: transparent;
   position: relative;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 .admin-header {
-  background: rgba(8, 47, 73, 0.6);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
   height: 56px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 16px;
-  color: var(--text-light);
-  border-bottom: 1px solid rgba(34, 211, 238, 0.18);
+  color: var(--ink);
+  border-bottom: 1px solid rgba(148, 197, 240, 0.2);
   position: sticky;
   top: 0;
   z-index: 100;
 }
 .header-left { display: flex; align-items: center; gap: 12px; }
-.menu-btn { color: var(--text-light); }
-.menu-btn:hover { color: var(--cyan-bright); }
-.header-title { font-size: 17px; font-weight: 700; color: var(--text-bright); font-family: var(--font-display); letter-spacing: 0.06em; text-shadow: 0 0 14px rgba(34, 211, 238, 0.5); }
+.menu-btn { color: var(--gray-600); }
+.menu-btn:hover { color: var(--primary); }
+.header-title { font-size: 17px; font-weight: 700; color: var(--primary-700); font-family: var(--font-display); letter-spacing: 0.06em; }
 .admin-user {
   display: flex;
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  color: var(--text-light);
+  color: var(--gray-700);
   font-size: 14px;
   font-weight: 600;
   padding: 5px 12px 5px 5px;
   border-radius: 24px;
   transition: background 0.2s;
 }
-.admin-user:hover { background: rgba(34, 211, 238, 0.14); }
+.admin-user:hover { background: rgba(91, 155, 213, 0.08); }
 .user-avatar {
   width: 32px;
   height: 32px;
@@ -149,10 +152,10 @@ const handleCommand = async (cmd) => {
   font-size: 14px;
   font-weight: 700;
   font-family: var(--font-display);
-  box-shadow: 0 0 14px rgba(34, 211, 238, 0.55);
+  box-shadow: 0 0 12px rgba(91, 155, 213, 0.3);
 }
 .user-name { font-weight: 600; }
-.admin-content { padding: 18px 16px 32px; max-width: 800px; margin: 0 auto; }
+.admin-content { padding: 18px 16px 32px; margin: 0 auto; flex: 1; overflow: auto; min-width: 0; }
 
 /* Drawer 样式覆盖 */
 .admin-drawer :deep(.el-drawer__body) { padding: 0; }
@@ -163,11 +166,11 @@ const handleCommand = async (cmd) => {
   padding: 22px 20px;
   font-size: 17px;
   font-weight: 700;
-  color: var(--text-bright);
+  color: var(--primary-700);
   font-family: var(--font-display);
   letter-spacing: 0.06em;
-  border-bottom: 1px solid rgba(34, 211, 238, 0.15);
-  background: rgba(6, 36, 61, 0.5);
+  border-bottom: 1px solid rgba(148, 197, 240, 0.15);
+  background: rgba(240, 247, 255, 0.5);
 }
 .admin-drawer .el-menu { border-right: none; }
 </style>

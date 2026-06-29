@@ -6,6 +6,7 @@
     </div>
 
     <el-card shadow="never">
+      <div class="table-wrap">
       <el-table :data="doctors" stripe style="width: 100%">
         <el-table-column prop="id" label="ID" width="50" />
         <el-table-column prop="name" label="姓名" width="70" />
@@ -19,6 +20,7 @@
           </template>
         </el-table-column>
       </el-table>
+      </div>
     </el-card>
 
     <el-dialog v-model="dialogVisible" :title="isEdit ? '编辑医师' : '新增医师'" width="95%" top="5vh">
@@ -90,7 +92,8 @@ onMounted(loadData);
 </script>
 
 <style scoped>
-.doctor-manage { max-width: 600px; margin: 0 auto; }
+.doctor-manage { width: 100%; }
+.table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--gray-100); }
 .page-title { font-size: 22px; margin-bottom: 18px; font-family: var(--font-display); color: var(--gray-900); letter-spacing: 0.04em; }
 .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
 .page-header .page-title { margin-bottom: 0; }

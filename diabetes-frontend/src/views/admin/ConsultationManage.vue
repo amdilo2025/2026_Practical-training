@@ -3,6 +3,7 @@
     <h3 class="page-title">咨询管理</h3>
 
     <el-card shadow="never">
+      <div class="table-wrap">
       <el-table :data="consultations" stripe style="width: 100%">
         <el-table-column prop="id" label="ID" width="50" />
         <el-table-column prop="user_name" label="用户" width="70" />
@@ -19,6 +20,7 @@
           </template>
         </el-table-column>
       </el-table>
+      </div>
     </el-card>
 
     <el-dialog v-model="replyVisible" :title="'回复咨询 #'+current.id" width="95%" top="10vh">
@@ -73,7 +75,8 @@ onMounted(loadData);
 </script>
 
 <style scoped>
-.consult-manage { max-width: 600px; margin: 0 auto; }
+.consult-manage { width: 100%; }
+.table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--gray-100); }
 .page-title { font-size: 22px; margin-bottom: 18px; font-family: var(--font-display); color: var(--gray-900); letter-spacing: 0.04em; }
 .consult-question { background: var(--primary-50); border-left: 3px solid var(--primary); padding: 12px 14px; border-radius: 0 10px 10px 0; font-size: 14px; line-height: 1.65; color: var(--gray-700); }
 .consult-question :deep(strong) { color: var(--primary-700); }
