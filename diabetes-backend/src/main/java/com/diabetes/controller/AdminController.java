@@ -21,9 +21,6 @@ public class AdminController {
     private ConsultationService consultationService;
 
     @Autowired
-    private DailyCheckinService dailyCheckinService;
-
-    @Autowired
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -87,7 +84,7 @@ public class AdminController {
         }
 
         try {
-            List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+            List<Map<String, Object>> rows = jdbcTemplate.queryForList(cleanSql);
             result.put("result", rows);
         } catch (Exception e) {
             result.put("result", List.of(Map.of("error", "SQL执行失败: " + e.getMessage())));
